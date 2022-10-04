@@ -21,6 +21,7 @@ class Game:
         print("Resetting game...")
 
     def game_over(self):
+        print("All Lives gone, GAME OVER!")
         self.sound.gameover()
         self.gameover = True
         self.sound.stop_bg()
