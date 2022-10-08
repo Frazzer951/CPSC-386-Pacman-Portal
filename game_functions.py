@@ -25,7 +25,12 @@ def check_events(settings):
 
 
 def world_to_screen(pos):
-    return (pos.x * 125 + 25, pos.y * 125 + 25)
+    x_offset = 15
+    x_scale = 20
+    y_offset = 15
+    y_scale = 20
+
+    return (pos.x * x_scale + x_offset, pos.y * y_scale + y_offset)
 
 
 def clamp(posn, rect, settings):

@@ -33,6 +33,6 @@ class Pacman(Character):
 
     def draw(self):
         pos = gf.world_to_screen(self.pos)
-        pg.draw.circle(self.screen, (255, 255, 0), pos, 20)
+        pg.draw.circle(self.screen, (255, 255, 0), pos, 10)
         # image = self.timer.image()
         # self.screen.blit(image, self.rect)

@@ -6,7 +6,7 @@ from vector import Vector
 class Node:
     def __init__(self, pos: Vector, nodes=None):
         self.pos = pos
-        self.neighbors = []
+        self.neighbors: List = []
         if nodes is not None:
             for n in nodes:
                 self.connect(n)
@@ -15,8 +15,10 @@ class Node:
         return self.pos == node.pos
 
     def connect(self, node):
-        self.neighbors.append(node)
-        node.neighbors.append(self)
+        if node not in self.neighbors:
+            self.neighbors.append(node)
+        if self not in node.neighbors:
+            node.neighbors.append(self)
 
     def disconnect(self, node):
         self.neighbors.remove(node)
@@ -32,6 +34,22 @@ class Graph:
             if n.pos == pos:
                 return n.neighbors
 
+    def is_node_at(self, pos):
+        for n in self.nodes:
+            if n.pos == pos:
+                return True
+        return False
+
+    def get_node_at(self, pos):
+        for n in self.nodes:
+            if n.pos == pos:
+                return n
+        return None
+
+    def add_node(self, pos):
+        if not self.is_node_at(pos):
+            self.nodes.append(Node(pos))
+
     def get_edges(self):
         edges = set()
         for node in self.nodes:
@@ -41,19 +59,9 @@ class Graph:
                 edges.add(tuple(sorted([p1, p2])))
         return edges
 
-    def is_node_at(self, pos):
-        for n in self.nodes:
-            if n.pos == pos:
-                return True
-        return False
-
     def connect_pos(self, pos1, pos2):
-        a = b = None
-        for node in self.nodes:
-            if node.pos == pos1:  # find node for first position
-                a = node
-            if node.pos == pos2:  # find node for second position
-                b = node
+        a = self.get_node_at(pos1)
+        b = self.get_node_at(pos2)
 
         if a is None:  # create Node A if it couldn't be found
             a = Node(pos1)
