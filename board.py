@@ -15,6 +15,7 @@ class Board:
         self.graph.connect_pos((0, 0), (1, 0))
         self.graph.connect_pos((1, 0), (1, 1))
         self.graph.connect_pos((0, 1), (1, 1))
+        self.graph.connect_pos((1, 1), (1, 2))
 
     def world_to_screen(self, pos):
         return (pos[0] * 125 + 25, pos[1] * 125 + 25)
