@@ -1,3 +1,4 @@
+from board import Board
 from scoreboard import Scoreboard
 from settings import Settings
 from sound import Sound
@@ -12,8 +13,10 @@ class Game:
         size = self.settings.screen_width, self.settings.screen_height  # tuple
         self.screen = pg.display.set_mode(size=size)
 
-        self.sound = Sound(bg_music="sounds/startrek.wav")
-        self.scoreboard = Scoreboard(game=self)
+        # self.sound = Sound(bg_music="sounds/startrek.wav")
+        # self.scoreboard = Scoreboard(game=self)
+
+        self.gameboard = Board(game=self)
 
         self.gameover = False
 
@@ -22,9 +25,9 @@ class Game:
 
     def game_over(self):
         print("All Lives gone, GAME OVER!")
-        self.sound.gameover()
+        # self.sound.gameover()
         self.gameover = True
-        self.sound.stop_bg()
+        # self.sound.stop_bg()
 
         scores = gf.read_high_scores()
         scores.append(self.scoreboard.score)
@@ -33,15 +36,17 @@ class Game:
         gf.write_high_scores(scores)
 
     def play(self):
-        self.sound.play_bg()
+        # self.sound.play_bg()
         frametime = 1 / 60
         while True:
             if self.gameover:
                 break
 
             start_time = time()
-            gf.check_events(settings=self.settings, ship=self.ship)
+            gf.check_events(settings=self.settings)
             self.screen.fill(self.settings.bg_color)
+
+            self.gameboard.draw()
 
             pg.display.flip()
             elapsed = time() - start_time
@@ -50,7 +55,7 @@ class Game:
 
 
 def main():
-    g = Game
+    g = Game()
     g.play()
 
 
