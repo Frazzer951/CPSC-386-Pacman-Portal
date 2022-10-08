@@ -19,6 +19,9 @@ class Board:
         self.graph.connect_pos(Vector(0, 1), Vector(1, 1))
         self.graph.connect_pos(Vector(1, 1), Vector(1, 2))
 
+        self.graph.connect_pos(Vector(1, 0), Vector(2, 0))
+        self.graph.connect_pos(Vector(2, 0), Vector(3, 0))
+
     def is_valid_pos(self, pos):
         return self.graph.is_node_at(pos)
 
