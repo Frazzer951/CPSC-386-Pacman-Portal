@@ -1,18 +1,20 @@
 import pygame as pg
 
+import game_functions as gf
+from character import Character, Direction
 from vector import Vector
-from character import Character
-from game import Game
 
 
 class Pacman(Character):
-    def __init__(self, game: Game):
-        super.__init__(game=game)
+    def __init__(self, game):
+        super().__init__(game=game)
         self.game = game
         self.lives = 4
-        self.pos = Vector(game.settings.initial_x, game.settings.initial_y)
+        self.pos = Vector(game.settings.pacman_start_x, game.settings.pacman_start_x)
         # self.image = pg.image.load('images/pacman.bmp')
         # self.rect = self.image.get_rect()
+
+        self.next_dir = Direction.RIGHT
 
     def check_collision(self):
         # if small dot
@@ -26,12 +28,11 @@ class Pacman(Character):
         pass
 
     def update(self):
-        # implement moving pacman
-        self.check_collision()
-
-        super.update()  # use parent class' update since it can handle the movement
+        self.move()
+        self.draw()
 
     def draw(self):
-        pass
+        pos = gf.world_to_screen(self.pos)
+        pg.draw.circle(self.screen, (255, 255, 0), pos, 20)
         # image = self.timer.image()
         # self.screen.blit(image, self.rect)

@@ -1,7 +1,9 @@
-from pathlib import Path
-from vector import Vector
-import pygame as pg
 import sys
+from pathlib import Path
+
+import pygame as pg
+
+from vector import Vector
 
 
 def check_keydown_events(event, settings):
@@ -20,6 +22,10 @@ def check_events(settings):
             check_keydown_events(event=event, settings=settings)
         elif event.type == pg.KEYUP:
             check_keyup_events(event=event)
+
+
+def world_to_screen(pos):
+    return (pos.x * 125 + 25, pos.y * 125 + 25)
 
 
 def clamp(posn, rect, settings):

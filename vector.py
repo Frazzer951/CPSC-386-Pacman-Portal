@@ -64,3 +64,6 @@ class Vector:
         self.x *= k
         self.y += k
         return self
+
+    def __eq__(self, other):  # v == u
+        return self.x == other.x and self.y == other.y

@@ -7,3 +7,7 @@ class Settings:
         self.screen_width = 1200
         self.screen_height = 800
         self.bg_color = (150, 150, 150)
+
+        # Pacman settings
+        self.pacman_start_x = 0
+        self.pacman_start_y = 0
