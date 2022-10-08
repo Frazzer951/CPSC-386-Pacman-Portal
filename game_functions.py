@@ -22,6 +22,10 @@ def check_events(settings):
             check_keyup_events(event=event)
 
 
+def world_to_screen(pos):
+    return (pos.x * 125 + 25, pos.y * 125 + 25)
+
+
 def clamp(posn, rect, settings):
     left, top = posn.x, posn.y
     width, height = rect.width, rect.height

@@ -5,6 +5,7 @@ from sound import Sound
 from time import time
 import game_functions as gf
 import pygame as pg
+from pacman import Pacman
 
 
 class Game:
@@ -17,6 +18,7 @@ class Game:
         # self.scoreboard = Scoreboard(game=self)
 
         self.gameboard = Board(game=self)
+        self.pacman = Pacman(game=self)
 
         self.gameover = False
 
@@ -47,6 +49,7 @@ class Game:
             self.screen.fill(self.settings.bg_color)
 
             self.gameboard.draw()
+            self.pacman.update()
 
             pg.display.flip()
             elapsed = time() - start_time

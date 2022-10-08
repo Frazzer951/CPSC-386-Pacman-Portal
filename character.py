@@ -1,12 +1,12 @@
 import pygame as pg
-
+from pygame.sprite import Sprite
 from enum import Enum, auto
-from pygame import Sprite
-from game import Game
 from timer import Timer
+from vector import Vector
+from board import Board
 
 
-class Movement(Enum):
+class Direction(Enum):
     UP = auto()
     DOWN = auto()
     LEFT = auto()
@@ -14,31 +14,63 @@ class Movement(Enum):
     NONE = auto()
 
 
+movement_map = {
+    Direction.UP: Vector(0, -1),
+    Direction.DOWN: Vector(0, 1),
+    Direction.LEFT: Vector(-1, 0),
+    Direction.RIGHT: Vector(1, 0),
+    Direction.NONE: Vector(0, 0),
+}
+
+
 class Character(Sprite):
-    def __init__(self, game: Game):
+    def __init__(self, game):
+        super().__init__()
         self.game = game
         self.screen = game.screen
-        self.sound = game.sound
+        self.gameboard: Board = game.gameboard
+        # self.sound = game.sound
 
-        self.dir = Movement.NONE
-        self.next_dir = Movement.NONE
+        self.move_speed = 0.1
 
-        self.game_pos = (0, 0)  # Cordinate in graph
-        self.world_pos = (0, 0)  # Cordinate in pixels
+        self.dir = Direction.NONE
+        self.next_dir = Direction.NONE
+
+        self.pos = Vector()
+        self.target_pos = Vector()
+        self.move_vec = Vector()
 
         self.isMoving = False
+        self.move_steps = 1 / self.move_speed
+        self.move_step = 0
 
         self.timer = Timer(image_list=[pg.image.load("images/placeholder_32.png")])
         self.rect = self.timer.image().get_rect()
 
-    def update(self):
-        if self.isMoving:  # Move from our current node to the next
-            pass
-        else:  # Get the next move direction
-            # WIP idk if this is how we'll do it
+    def move(self):
+        if self.isMoving:
+            if self.move_step >= self.move_steps:
+                self.isMoving = False
+                self.pos = self.target_pos
+            else:
+                self.pos += self.move_vec * self.move_speed
+                self.move_step += 1
+        else:
             self.dir = self.next_dir
-            if self.dir is not Movement.NONE:
+            if self.dir == Direction.NONE:
+                return  # If the move direction is NONE, then return
+
+            self.move_vec = movement_map[self.dir]
+            self.target_pos = self.pos + self.move_vec
+            if self.gameboard.is_valid_pos(self.target_pos):
+                self.move_step = 0
                 self.isMoving = True
+            else:
+                self.dir = self.next_dir = Direction.NONE
+                self.target_pos = self.pos
+
+    def update(self):
+        self.move()
 
     def draw(self):
         image = self.timer.image()

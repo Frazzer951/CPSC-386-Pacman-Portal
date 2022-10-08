@@ -1,8 +1,9 @@
 from typing import List
+from vector import Vector
 
 
 class Node:
-    def __init__(self, pos, nodes=None):
+    def __init__(self, pos: Vector, nodes=None):
         self.pos = pos
         self.neighbors = []
         if nodes is not None:
@@ -33,11 +34,17 @@ class Graph:
     def get_edges(self):
         edges = set()
         for node in self.nodes:
-            p1 = node.pos
+            p1 = (node.pos.x, node.pos.y)
             for neighbor in node.neighbors:
-                p2 = neighbor.pos
+                p2 = (neighbor.pos.x, neighbor.pos.y)
                 edges.add(tuple(sorted([p1, p2])))
         return edges
+
+    def is_node_at(self, pos):
+        for n in self.nodes:
+            if n.pos == pos:
+                return True
+        return False
 
     def connect_pos(self, pos1, pos2):
         a = b = None
