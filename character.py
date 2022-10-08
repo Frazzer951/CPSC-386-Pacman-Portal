@@ -1,9 +1,11 @@
+from enum import Enum, auto
+
 import pygame as pg
 from pygame.sprite import Sprite
-from enum import Enum, auto
+
+from gameboard import Gameboard
 from timer import Timer
 from vector import Vector
-from gameboard import Gameboard
 
 
 class Direction(Enum):

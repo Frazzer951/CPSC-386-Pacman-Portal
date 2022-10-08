@@ -1,7 +1,9 @@
-from pathlib import Path
-from vector import Vector
-import pygame as pg
 import sys
+from pathlib import Path
+
+import pygame as pg
+
+from vector import Vector
 
 
 def check_keydown_events(event, settings):

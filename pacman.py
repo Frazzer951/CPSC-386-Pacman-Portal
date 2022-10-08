@@ -1,8 +1,8 @@
 import pygame as pg
-import game_functions as gf
 
-from vector import Vector
+import game_functions as gf
 from character import Character, Direction
+from vector import Vector
 
 
 class Pacman(Character):

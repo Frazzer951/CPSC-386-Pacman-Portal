@@ -1,11 +1,13 @@
+from time import time
+
+import pygame as pg
+
+import game_functions as gf
 from gameboard import Gameboard
+from pacman import Pacman
 from scoreboard import Scoreboard
 from settings import Settings
 from sound import Sound
-from time import time
-import game_functions as gf
-import pygame as pg
-from pacman import Pacman
 
 
 class Game:

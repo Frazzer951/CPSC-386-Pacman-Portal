@@ -1,4 +1,5 @@
 import pygame as pg
+
 import game_functions as gf
 from graph import Graph
 from vector import Vector

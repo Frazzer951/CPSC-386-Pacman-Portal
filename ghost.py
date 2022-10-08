@@ -1,8 +1,8 @@
 import pygame as pg
 
-from vector import Vector
 from character import Character
 from game import Game
+from vector import Vector
 
 
 class Ghosts:
