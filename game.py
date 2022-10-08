@@ -1,4 +1,4 @@
-from board import Board
+from gameboard import Gameboard
 from scoreboard import Scoreboard
 from settings import Settings
 from sound import Sound
@@ -17,7 +17,7 @@ class Game:
         # self.sound = Sound(bg_music="sounds/startrek.wav")
         # self.scoreboard = Scoreboard(game=self)
 
-        self.gameboard = Board(game=self)
+        self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
 
         self.gameover = False

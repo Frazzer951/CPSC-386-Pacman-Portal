@@ -3,7 +3,7 @@ from pygame.sprite import Sprite
 from enum import Enum, auto
 from timer import Timer
 from vector import Vector
-from board import Board
+from gameboard import Gameboard
 
 
 class Direction(Enum):
@@ -28,7 +28,7 @@ class Character(Sprite):
         super().__init__()
         self.game = game
         self.screen = game.screen
-        self.gameboard: Board = game.gameboard
+        self.gameboard: Gameboard = game.gameboard
         # self.sound = game.sound
 
         self.move_speed = 0.1

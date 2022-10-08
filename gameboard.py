@@ -4,7 +4,7 @@ from graph import Graph
 from vector import Vector
 
 
-class Board:
+class Gameboard:
     def __init__(self, game):
         self.game = game
         self.screen = game.screen
