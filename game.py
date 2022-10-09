@@ -47,7 +47,7 @@ class Game:
                 break
 
             start_time = time()
-            gf.check_events(settings=self.settings)
+            gf.check_events(game=self)
             self.screen.fill(self.settings.bg_color)
 
             self.gameboard.draw()
