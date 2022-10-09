@@ -92,11 +92,13 @@ class Gameboard:
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
-        for edge in self.graph.get_edges():
-            p1 = gf.world_to_screen(Vector(edge[0][0], edge[0][1]))
-            p2 = gf.world_to_screen(Vector(edge[1][0], edge[1][1]))
-            pg.draw.line(self.screen, (255, 0, 0), p1, p2, 1)
+        # Draw all node edges
+        # for edge in self.graph.get_edges():
+        #     p1 = gf.world_to_screen(Vector(edge[0][0], edge[0][1]))
+        #     p2 = gf.world_to_screen(Vector(edge[1][0], edge[1][1]))
+        #     pg.draw.line(self.screen, (255, 0, 0), p1, p2, 1)
 
+        # Draw all nodes
         for node in self.graph.nodes:
             pos = gf.world_to_screen(node.pos)
             pg.draw.circle(self.screen, (255, 255, 255), pos, 5)
