@@ -75,6 +75,20 @@ class Gameboard:
     def is_valid_pos(self, pos):
         return self.graph.is_node_at(pos)
 
+    def is_valid_move(self, curpos, pos):
+        curnode = self.graph.get_node_at(curpos)
+        node = self.graph.get_node_at(pos)
+        if node is not None:
+            return curnode in node.neighbors
+        return False
+
+    def checkwarp(self, pos):
+        if pos == Vector(-1, 13):
+            return Vector(25, 13)
+        if pos == Vector(26, 13):
+            return Vector(0, 13)
+        return None
+
     def draw(self):
         self.screen.blit(self.image, self.rect)
 

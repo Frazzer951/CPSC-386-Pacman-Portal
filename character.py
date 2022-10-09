@@ -54,6 +54,9 @@ class Character(Sprite):
             if self.move_step >= self.move_steps:
                 self.isMoving = False
                 self.pos = self.target_pos
+                warp_pos = self.gameboard.checkwarp(self.pos)
+                if warp_pos is not None:
+                    self.pos = warp_pos
             else:
                 self.pos += self.move_vec * self.move_speed
                 self.move_step += 1
@@ -64,7 +67,7 @@ class Character(Sprite):
 
             self.move_vec = movement_map[self.dir]
             self.target_pos = self.pos + self.move_vec
-            if self.gameboard.is_valid_pos(self.target_pos):
+            if self.gameboard.is_valid_move(self.pos, self.target_pos):
                 self.move_step = 0
                 self.isMoving = True
             else:
