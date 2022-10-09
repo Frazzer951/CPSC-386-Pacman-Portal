@@ -25,7 +25,7 @@ def check_events(settings):
 
 
 def world_to_screen(pos):
-    x_offset = 45
+    x_offset = 50
     y_offset = 95
     x_scale = 26
     y_scale = 26
