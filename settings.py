@@ -4,9 +4,9 @@ class Settings:
     def __init__(self):
         """Initialize the game's settings."""
         # Screen settings
-        self.screen_width = 1200
-        self.screen_height = 800
-        self.bg_color = (150, 150, 150)
+        self.screen_width = 750
+        self.screen_height = 900
+        self.bg_color = (0, 0, 0)
 
         # Pacman settings
         self.pacman_start_x = 0

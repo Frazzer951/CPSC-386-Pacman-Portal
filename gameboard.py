@@ -11,6 +11,10 @@ class Gameboard:
         self.screen = game.screen
         self.graph: Graph = Graph()
 
+        self.image = pg.transform.rotozoom(pg.image.load("./images/maze.png"), 0, 3.25)
+        self.rect = self.image.get_rect()
+        self.rect.center = (self.screen.get_width() // 2, self.screen.get_height() // 2)
+
         self.create_board()
 
     def create_board(self):
@@ -67,6 +71,8 @@ class Gameboard:
         return self.graph.is_node_at(pos)
 
     def draw(self):
+        self.screen.blit(self.image, self.rect)
+
         for edge in self.graph.get_edges():
             p1 = gf.world_to_screen(Vector(edge[0][0], edge[0][1]))
             p2 = gf.world_to_screen(Vector(edge[1][0], edge[1][1]))

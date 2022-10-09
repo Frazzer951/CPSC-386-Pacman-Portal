@@ -25,10 +25,10 @@ def check_events(settings):
 
 
 def world_to_screen(pos):
-    x_offset = 15
-    x_scale = 20
-    y_offset = 15
-    y_scale = 20
+    x_offset = 45
+    y_offset = 95
+    x_scale = 26
+    y_scale = 26
 
     return (pos.x * x_scale + x_offset, pos.y * y_scale + y_offset)
 
