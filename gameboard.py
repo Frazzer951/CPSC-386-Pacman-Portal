@@ -100,5 +100,4 @@ class Gameboard:
 
         # Draw all nodes
         for node in self.graph.nodes:
-            pos = gf.world_to_screen(node.pos)
-            pg.draw.circle(self.screen, (255, 255, 255), pos, 5)
+            node.draw(self.screen)

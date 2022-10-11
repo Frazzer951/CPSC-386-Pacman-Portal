@@ -1,6 +1,8 @@
 from typing import List
 
 from vector import Vector
+import game_functions as gf
+import pygame as pg
 
 
 class Node:
@@ -23,6 +25,10 @@ class Node:
     def disconnect(self, node):
         self.neighbors.remove(node)
         node.neighbors.remove(self)
+
+    def draw(self, screen):
+        pos = gf.world_to_screen(self.pos)
+        pg.draw.circle(screen, (255, 255, 255), pos, 5)
 
 
 class Graph:
