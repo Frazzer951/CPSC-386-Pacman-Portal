@@ -11,7 +11,7 @@ class Gameboard:
         self.screen = game.screen
         self.graph: Graph = Graph()
 
-        self.image = pg.transform.rotozoom(pg.image.load("./images/maze.png"), 0, 3.25)
+        self.image = pg.transform.rotozoom(pg.image.load("./images/maze.png"), 0, 2.75)
         self.rect = self.image.get_rect()
         self.rect.center = (self.screen.get_width() // 2, self.screen.get_height() // 2)
 
