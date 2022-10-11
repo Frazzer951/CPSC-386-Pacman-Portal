@@ -2,8 +2,16 @@ import pygame as pg
 
 
 class Timer:
-    def __init__(self, frames, wait=100, frameindex=0, step=1,  # imagerect frames
-                 looponce=False, wait_for_command=False, oscillating=False):
+    def __init__(
+        self,
+        frames,
+        wait=100,
+        frameindex=0,
+        step=1,  # imagerect frames
+        looponce=False,
+        wait_for_command=False,
+        oscillating=False,
+    ):
         self.frames = frames
         self.wait = wait
         self.frameindex = frameindex
@@ -22,7 +30,8 @@ class Timer:
             self.last = now
             self.frameindex = 0 if self.step == 1 else len(self.frames) - 1
             return 0
-        elif self.wait_for_command: return self.frameindex
+        elif self.wait_for_command:
+            return self.frameindex
         elif not self.finished and now - self.last > self.wait:
             if self.looponce and self.frameindex + self.step >= self.lastframe:
                 self.finished = True
@@ -30,16 +39,20 @@ class Timer:
             if self.oscillating:
                 if self.frameindex >= self.lastframe or self.frameindex <= 0:
                     self.step *= -1
-                if self.frameindex <= 0: self.frameindex = 0
-                if self.frameindex >= self.lastframe: self.frameindex = self.lastframe
+                if self.frameindex <= 0:
+                    self.frameindex = 0
+                if self.frameindex >= self.lastframe:
+                    self.frameindex = self.lastframe
             else:
                 self.frameindex %= len(self.frames)
             self.last = now
         return self.frameindex
 
     def advance_frame_index(self):
-        if not self.wait_for_command or self.finished: return
-        if self.looponce and self.frameindex >= self.lastframe: self.finished = True
+        if not self.wait_for_command or self.finished:
+            return
+        if self.looponce and self.frameindex >= self.lastframe:
+            self.finished = True
         else:
             self.frameindex += self.step
             self.frameindex %= len(self.frames)
@@ -49,8 +62,8 @@ class Timer:
         self.last = None
         self.finished = False
 
-    def __str__(self): return 'Timer(frames=' + self.frames +\
-                              ', wait=' + str(self.wait) + ', index=' + str(self.frameindex) + ')'
+    def __str__(self):
+        return "Timer(frames=" + self.frames + ", wait=" + str(self.wait) + ", index=" + str(self.frameindex) + ")"
 
     def imagerect(self):
         return self.frames[self.frame_index()]
@@ -65,15 +78,20 @@ class TimerDict:
         self.timer = self.dict_timers[first_key]
         self.key = first_key
 
-    def switch_timer(self, key): self.key = key
+    def switch_timer(self, key):
+        self.key = key
 
-    def getkey(self): return self.key
+    def getkey(self):
+        return self.key
 
-    def frame_index(self): return self.dict_timers[self.key].frame_index()
+    def frame_index(self):
+        return self.dict_timers[self.key].frame_index()
 
-    def advance_frame_index(self): self.dict_timers[self.key].advance_frame_index()
+    def advance_frame_index(self):
+        self.dict_timers[self.key].advance_frame_index()
 
-    def reset(self): self.dict_timers[self.key].reset()
+    def reset(self):
+        self.dict_timers[self.key].reset()
 
     def imagerect(self):
         timer = self.dict_timers[self.key]
