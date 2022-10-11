@@ -1,9 +1,10 @@
 from enum import Enum, auto
 from typing import List
 
-from vector import Vector
-import game_functions as gf
 import pygame as pg
+
+import game_functions as gf
+from vector import Vector
 
 
 class NodeType(Enum):

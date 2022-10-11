@@ -1,6 +1,5 @@
 import pygame as pg
 
-
 from graph import Graph, NodeType
 from vector import Vector
 
