@@ -1,7 +1,7 @@
 import pygame as pg
 
-import game_functions as gf
-from graph import Graph
+
+from graph import Graph, NodeType
 from vector import Vector
 
 
@@ -18,47 +18,56 @@ class Gameboard:
         self.create_board()
 
     def create_board(self):
-        gameboard_string = [  # 0 = ignore, 1 = node, 2 = point orb, 3 = power up, 4 = portal
-            "11111111111100111111111111",  # 0
-            "10000100000100100000100001",
-            "10000100000100100000100001",
-            "10000100000100100000100001",
-            "11111111111111111111111111",
-            "10000100100000000100100001",
-            "10000100100000000100100001",
-            "11111100111100111100111111",
-            "00000100000100100000100000",
-            "00000100000100100000100000",
-            "00000100111111111100100000",
-            "00000100100000000100100000",
-            "00000100100000000100100000",
-            "11111111100000000111111111",  # 13
-            "00000100100000000100100000",
-            "00000100100000000100100000",
-            "00000100111111111100100000",
-            "00000100100000000100100000",
-            "00000100100000000100100000",
-            "11111111111100111111111111",
-            "10000100000100100000100001",
-            "10000100000100100000100001",
-            "11100111111111111111100111",
-            "00100100100000000100100100",
-            "00100100100000000100100100",
-            "11111100111100111100111111",
-            "10000000000100100000000001",
-            "10000000000100100000000001",
-            "11111111111111111111111111",  # 28
+        gameboard_string = [  # 0 = ignore, 1 = node, 2 = point orb, 3 = power up, 4 = fruit
+            "22222222222200222222222222",  # 0
+            "20000200000200200000200002",
+            "30000200000200200000200003",
+            "20000200000200200000200002",
+            "22222222222222222222222222",
+            "20000200200000000200200002",
+            "20000200200000000200200002",
+            "22222200222200222200222222",
+            "00000200000100100000200000",
+            "00000200000100100000200000",
+            "00000200111111111100200000",
+            "00000200100000000100200000",
+            "00000200100000000100200000",
+            "11111211100000000111211111",  # 13
+            "00000200100000000100200000",
+            "00000200100000000100200000",
+            "00000200111111111100200000",
+            "00000200100000000100200000",
+            "00000200100000000100200000",
+            "22222222222200222222222222",
+            "20000200000200200000200002",
+            "20000200000200200000200002",
+            "32200222222222222222200223",
+            "00200200200000000200200200",
+            "00200200200000000200200200",
+            "22222200222200222200222222",
+            "20000000000200200000000002",
+            "20000000000200200000000002",
+            "22222222222222222222222222",  # 28
         ]
+
+        num_to_type = {
+            "1": NodeType.NONE,
+            "2": NodeType.POINT,
+            "3": NodeType.POWER_UP,
+            "4": NodeType.FRUIT,
+        }
 
         def neighbor_node(from_pos: Vector, to_pos: Vector):
             if to_pos.x < 0 or to_pos.y < 0 or to_pos.x >= len(gameboard_string[0]) or to_pos.y >= len(gameboard_string):
                 return
-            if gameboard_string[to_pos.y][to_pos.x] == "1":
+            val = gameboard_string[to_pos.y][to_pos.x]
+            if val in ["1", "2", "3", "4"]:
+                self.graph.add_node(to_pos)
                 self.graph.connect_pos(from_pos, to_pos)
 
         for j, col in enumerate(gameboard_string):
             for i, val in enumerate(col):
-                if val == "1":
+                if val in ["1", "2", "3", "4"]:
                     self.graph.add_node(Vector(i, j))
                     neighbor_node(Vector(i, j), Vector(i - 1, j))
                     neighbor_node(Vector(i, j), Vector(i + 1, j))
@@ -66,6 +75,14 @@ class Gameboard:
                     neighbor_node(Vector(i, j), Vector(i, j + 1))
                 else:
                     continue
+
+        for j, col in enumerate(gameboard_string):
+            for i, val in enumerate(col):
+                if val in ["1", "2", "3", "4"]:
+                    type = num_to_type[val]
+                    if type != NodeType.NONE:
+                        node = self.graph.get_node_at(Vector(i, j))
+                        node.type = type
 
         # "Warp Gate" Nodes
         self.graph.connect_pos(Vector(0, 13), Vector(-1, 13))
