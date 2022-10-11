@@ -53,7 +53,7 @@ class Gameboard:
         def neighbor_node(from_pos: Vector, to_pos: Vector):
             if to_pos.x < 0 or to_pos.y < 0 or to_pos.x >= len(gameboard_string[0]) or to_pos.y >= len(gameboard_string):
                 return
-            if gameboard_string[to_pos.y][to_pos.x] == "1":
+            if gameboard_string[int(to_pos.y)][int(to_pos.x)] == "1":
                 self.graph.connect_pos(from_pos, to_pos)
 
         for j, col in enumerate(gameboard_string):
