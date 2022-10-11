@@ -59,6 +59,7 @@ class Gameboard:
         def neighbor_node(from_pos: Vector, to_pos: Vector):
             if to_pos.x < 0 or to_pos.y < 0 or to_pos.x >= len(gameboard_string[0]) or to_pos.y >= len(gameboard_string):
                 return
+
             val = gameboard_string[to_pos.y][to_pos.x]
             if val in ["1", "2", "3", "4"]:
                 self.graph.add_node(to_pos)
