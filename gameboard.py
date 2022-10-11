@@ -60,7 +60,7 @@ class Gameboard:
             if to_pos.x < 0 or to_pos.y < 0 or to_pos.x >= len(gameboard_string[0]) or to_pos.y >= len(gameboard_string):
                 return
 
-            val = gameboard_string[to_pos.y][to_pos.x]
+            val = gameboard_string[int(to_pos.y)][int(to_pos.x)]
             if val in ["1", "2", "3", "4"]:
                 self.graph.add_node(to_pos)
                 self.graph.connect_pos(from_pos, to_pos)
