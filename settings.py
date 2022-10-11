@@ -1,3 +1,6 @@
+from vector import Vector
+
+
 class Settings:
     """A class to store all settings for Alien Invasion."""
 
@@ -9,5 +12,4 @@ class Settings:
         self.bg_color = (0, 0, 0)
 
         # Pacman settings
-        self.pacman_start_x = 0
-        self.pacman_start_y = 0
+        self.pacman_start = Vector(12, 22)
