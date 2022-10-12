@@ -3,8 +3,8 @@ from time import time
 import pygame as pg
 
 import game_functions as gf
-from ghost import Ghosts
 from gameboard import Gameboard
+from ghost import Ghosts
 from pacman import Pacman
 from scoreboard import Scoreboard
 from settings import Settings

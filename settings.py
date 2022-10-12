@@ -14,7 +14,7 @@ class Settings:
         # Pacman settings
         self.pacman_start = Vector(12, 22)
 
-        #Ghost settings
+        # Ghost settings
         self.blinky_start = Vector(11, 13)
         self.inky_start = Vector(12, 13)
         self.pinky_start = Vector(13, 13)
