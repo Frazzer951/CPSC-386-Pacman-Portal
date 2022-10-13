@@ -1,23 +1,38 @@
+import pygame.font
+import pygame as pg
+
 class Button:
-    def __init__(self, pos, text, font, base_color, hover_color):
-        self.x = pos[0]
-        self.y = pos[1]
-        self.font = font
-        self.base_color, self.hover_color = base_color, hover_color
-        self.text_str = text
-        self.text = self.font.render(self.text_str, True, self.base_color)
-        self.text_rect = self.text.get_rect(center=(self.x, self.y))
 
-    def draw(self, screen):
-        screen.blit(self.text, self.text_rect)
+    def __init__(self, screen, msg):
+        self.screen = screen
+        self.screen_rect = screen.get_rect()
 
-    def onButton(self, pos):
-        return pos[0] in range(self.text_rect.left, self.text_rect.right) and pos[1] in range(
-            self.text_rect.top, self.text_rect.bottom
-        )
+        # Set the dimensions and properties of the button.
+        self.width, self.height = 200, 50
+        self.button_color = (0, 0, 0)
+        self.text_color = (249, 241, 0)
+        self.temp_color = self.text_color
+        self.font = pg.font.Font('fonts/crackman.ttf', 48)
 
-    def setHover(self, pos):
-        if self.onButton(pos):
-            self.text = self.font.render(self.text_str, True, self.hover_color)
-        else:
-            self.text = self.font.render(self.text_str, True, self.base_color)
+        # Build the button's rect object, and center it.
+        self.rect = pg.Rect(0, 0, self.width, self.height)
+        self.rect.center = self.screen_rect.center
+
+        self.msg_image = self.font.render(msg, True, self.text_color,
+                                          self.button_color)
+        self.msg_image_rect = self.msg_image.get_rect()
+        self.msg_image_rect.center = self.rect.center
+
+        # The button message only needs to be prepped once.
+        self.prep_msg(msg)
+
+    def prep_msg(self, msg):
+        self.msg_image = self.font.render(msg, True, self.text_color,
+                                          self.button_color)
+        self.msg_image_rect = self.msg_image.get_rect()
+        self.msg_image_rect.center = self.rect.center
+
+    def draw_button(self):
+        # Draw blank button, then draw message.
+        self.screen.fill(self.button_color, self.rect)
+        self.screen.blit(self.msg_image, self.msg_image_rect)

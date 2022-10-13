@@ -4,6 +4,7 @@ import pygame as pg
 
 import game_functions as gf
 from gameboard import Gameboard
+from launch import Launchscreen
 from ghost import Ghosts
 from pacman import Pacman
 from scoreboard import Scoreboard
@@ -17,8 +18,8 @@ class Game:
         size = self.settings.screen_width, self.settings.screen_height  # tuple
         self.screen = pg.display.set_mode(size=size)
 
-        # self.sound = Sound(bg_music="sounds/startrek.wav")
-        # self.scoreboard = Scoreboard(game=self)
+        #self.sound = Sound(bg_music="sounds/launch.mp3")
+        #self.scoreboard = Scoreboard(game=self)
 
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
@@ -44,7 +45,8 @@ class Game:
     def play(self):
         # self.sound.play_bg()
         frametime = 1 / 60
-        while True:
+        self.finished = False
+        while not self.finished:
             if self.gameover:
                 break
 
@@ -64,6 +66,8 @@ class Game:
 
 def main():
     g = Game()
+    ls = Launchscreen(game=g)
+    ls.show()
     g.play()
 
 
