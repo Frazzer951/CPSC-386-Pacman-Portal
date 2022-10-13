@@ -34,9 +34,9 @@ def check_events(game):
 
 def world_to_screen(pos):
     x_offset = 50
-    y_offset = 95
-    x_scale = 26
-    y_scale = 26
+    y_offset = 105
+    x_scale = 22
+    y_scale = 22
 
     return (pos.x * x_scale + x_offset, pos.y * y_scale + y_offset)
 

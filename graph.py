@@ -1,12 +1,25 @@
+from enum import Enum, auto
 from typing import List
 
+import pygame as pg
+
+import game_functions as gf
 from vector import Vector
 
 
+class NodeType(Enum):
+    POINT = auto()
+    POWER_UP = auto()
+    FRUIT = auto()
+    NONE = auto()
+
+
 class Node:
-    def __init__(self, pos: Vector, nodes=None):
+    def __init__(self, pos: Vector, type: NodeType = NodeType.NONE, nodes=None):
         self.pos = pos
+        self.type = type
         self.neighbors: List = []
+
         if nodes is not None:
             for n in nodes:
                 self.connect(n)
@@ -23,6 +36,17 @@ class Node:
     def disconnect(self, node):
         self.neighbors.remove(node)
         node.neighbors.remove(self)
+
+    def draw(self, screen):
+        pos = gf.world_to_screen(self.pos)
+        if self.type == NodeType.NONE:
+            pass  # pg.draw.circle(screen, (255, 255, 255), pos, 1)
+        if self.type == NodeType.POINT:
+            pg.draw.circle(screen, (255, 255, 255), pos, 2)
+        if self.type == NodeType.POWER_UP:
+            pg.draw.circle(screen, (255, 255, 255), pos, 5)
+        if self.type == NodeType.FRUIT:
+            pg.draw.circle(screen, (255, 0, 0), pos, 10)
 
 
 class Graph:

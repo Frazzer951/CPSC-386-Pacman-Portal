@@ -2,7 +2,6 @@ import pygame as pg
 
 import game_functions as gf
 from character import Character, Direction
-from vector import Vector
 
 
 class Pacman(Character):
@@ -10,11 +9,11 @@ class Pacman(Character):
         super().__init__(game=game)
         self.game = game
         self.lives = 4
-        self.pos = Vector(game.settings.pacman_start_x, game.settings.pacman_start_x)
+        self.pos = game.settings.pacman_start
         # self.image = pg.image.load('images/pacman.bmp')
         # self.rect = self.image.get_rect()
 
-        self.next_dir = Direction.RIGHT
+        self.next_dir = Direction.NONE
 
     def check_collision(self):
         # if small dot

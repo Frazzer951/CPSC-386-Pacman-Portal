@@ -5,6 +5,7 @@ import pygame as pg
 import game_functions as gf
 from gameboard import Gameboard
 from launch import Launchscreen
+from ghost import Ghosts
 from pacman import Pacman
 from scoreboard import Scoreboard
 from settings import Settings
@@ -22,6 +23,7 @@ class Game:
 
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
+        self.ghost = Ghosts(game=self)
 
         self.gameover = False
 
@@ -54,6 +56,7 @@ class Game:
 
             self.gameboard.draw()
             self.pacman.update()
+            self.ghost.update()
 
             pg.display.flip()
             elapsed = time() - start_time
