@@ -24,7 +24,6 @@ class Game:
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
         self.ghost = Ghosts(game=self)
-
         self.gameover = False
 
     def reset(self):
@@ -57,7 +56,7 @@ class Game:
             self.gameboard.draw()
             self.pacman.update()
             self.ghost.update()
-
+           
             pg.display.flip()
             elapsed = time() - start_time
             while elapsed < frametime:  # run with a max fps of 60

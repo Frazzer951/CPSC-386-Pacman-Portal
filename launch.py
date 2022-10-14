@@ -2,11 +2,16 @@ from decimal import HAVE_CONTEXTVAR
 from pickle import NONE
 from re import S
 from struct import pack
+from tkinter import X
+from turtle import Screen
+from urllib.parse import SplitResult
 import pygame as pg
 import sys
 from button import Button
 from pygame import Surface, mixer
 import pygame.font
+import pygame, sys
+
 
 
 BLACK = (0, 0, 0)
@@ -15,63 +20,135 @@ GREEN = (106, 233, 115)
 TRANSPARENT = (0,0,0,1.0)
 
 
-# class ScreenAnim:
-#     def __init__(self, pos_x, pos_y):
-#         super().__init__()
-#         self.sprites = []
-        # self.sprites.append(pg.image.load('images/blinky0.png'))
-        # self.sprites.append(pg.image.load('images/blinky1.png'))
-        # self.sprites.append(pg.image.load('images/clyde0.png'))
-        # self.sprites.append(pg.image.load('images/clyde1.png'))
-        # self.sprites.append(pg.image.load('images/inky0.png'))
-        # self.sprites.append(pg.image.load('images/inky1.png'))
-        # self.sprites.append(pg.image.load('images/pinky0.png'))
-        # self.sprites.append(pg.image.load('images/blinky1.png'))
 
+ 
+class Animation1(pygame.sprite.Sprite):
+    def __init__(self, game ):
+        super().__init__()
+        #
+        # self.x = x
+        # self.y = y
+        # self.end = end
+
+        # self.path = [self.x, self.y]
+        # self.vel = 3
+        #
+
+        self.screen = game.screen
+        #--------------------------------------------------
+        self.sprites1 = []
+        self.menu0 = pg.image.load('images/menu0.png')
+        fixedmenu0 = pg.transform.scale(self.menu0, (350,100))
+        self.sprites1.append(fixedmenu0)
+        
+        self.menu1 = pg.image.load('images/menu1.png')
+        fixedmenu1 = pg.transform.scale(self.menu1, (350,100))
+        self.sprites1.append(fixedmenu1)
+
+        self.menu2 = pg.image.load('images/menu2.png')
+        fixedmenu2 = pg.transform.scale(self.menu2, (350,100))
+        self.sprites1.append(fixedmenu2)
+
+        self.currentsprite1 = 0
+        self.image = self.sprites1[self.currentsprite1]
+        
+        self.rect = pg.Rect(200, 500, 350, 100)
+        #--------------------------------------------------
+        
+    # def move(self):
+    #     if self.vel > 0:
+    #         if self.x + self.vel < self.path[1]:
+    #             self.x += self.vel
+    
+    
+        
+    def update(self):
+        self.currentsprite1 += 1
+        
+        if self.currentsprite1 >= len(self.sprites1):
+            self.currentsprite1 = 0
+        self.image = self.sprites1[self.currentsprite1]
         
 
+#
+###
+#
+#
+#___))ONJKBHFUYIUHIKFG
 
-class Launchscreen:
+class Animation2(pygame.sprite.Sprite):
+    def __init__(self, game):
+        super().__init__()
+        #
+        self.screen = game.screen
+        
+        self.sprites2 = []
+        self.menu3 = pg.image.load('images/menu3.png')
+        fixedmenu3 = pg.transform.scale(self.menu3, (350,100))
+        self.sprites2.append(fixedmenu3)
+        
+        self.menu4 = pg.image.load('images/menu4.png')
+        fixedmenu4 = pg.transform.scale(self.menu4, (350,100))
+        self.sprites2.append(fixedmenu4)
+
+        self.menu5 = pg.image.load('images/menu5.png')
+        fixedmenu5 = pg.transform.scale(self.menu5, (350,100))
+        self.sprites2.append(fixedmenu5)
+
+        self.menu6 = pg.image.load('images/menu5.png')
+        fixedmenu6 = pg.transform.scale(self.menu6, (350,100))
+        self.sprites2.append(fixedmenu6)
+
+        self.currentsprite2 = 0
+        self.image = self.sprites2[self.currentsprite2]
+
+        self.rect = pg.Rect(200, 350, 350, 100)
+
+
+       
+    def update(self):
+        self.currentsprite2 += 1
+        
+        if self.currentsprite2 >= len(self.sprites2):
+            self.currentsprite2 = 0
+        self.image = self.sprites2[self.currentsprite2]
+        
+
+        
+       
+
+
+
+
+class Launchscreen():
     pacman = pg.image.load(f'images/Pac-Man-0.png')
     title = pg.image.load('images/title.png')
     bigPacman = pg.transform.scale(pacman, (150,150))
     bigtitle = pg.transform.scale(title, (653,436))
+
+    
     #font = pg.font.Font('fonts/8-Bit Madness.ttf', 30)
    
     x1 = 290
     y1 = 160
     titlex = 60
     titley = -80
-    
-    # blinkC, pinkC, inkyC, clydeC = (249, 0, 0), (249, 141, 224), (5, 249, 249), (249, 138, 13)
-    # text0 = font.render('Blinky', True, blinkC, (0, 0, 0))
-    # text1 = font.render('Pinky', True, pinkC, (0, 0, 0))
-    # text2 = font.render('Inky', True, inkyC, (0, 0, 0))
-    # text3 = font.render('Clyde', True, clydeC, (0, 0, 0))
-    # text4 = font.render('How High Can You Score?', True, (249, 241, 0), (0, 0, 0))
-    # textRect0, textRect1, textRect2, textRect3, textRect4 \
-    #     = text0.get_rect(), text1.get_rect(), text2.get_rect(), text3.get_rect(), text4.get_rect()
-    # textRect0.center, textRect1.center, textRect2.center, textRect3.center, textRect4.center \
-    #     = (275, 450), (275, 450), (275, 450), (275, 450), (275, 450)
-    
 
-
+    
     def __init__(self,game):
         self.screen = game.screen
         self.landing_page_finished = False
 
-        # blinky = self.blinky
-        # pinky = self.pinky
-        # inky = self.inky
-        # clyde = self.clyde
-        # blinky.rect.left, blinky.rect.top = 260, 410
-        # pinky.rect.left, pinky.rect.top = 260, 410
-        # inky.rect.left, inky.rect.top = 260, 410
-        # clyde.rect.left, clyde.rect.top = 260, 410
+        self.myanimation = Animation1(game=self)
+        self.myanimation2 = Animation2(game=self)
+
+        self.mygroup = pg.sprite.Group(self.myanimation)
+        self.mygroup2 = pg.sprite.Group(self.myanimation2)
+        self.clock = pg.time.Clock()
+        #
         
-        
-        
-        #self.highscore = game.stats.get_highscore()
+        #
+        #self.animation_1 = Animation(500,200, game=self)
 
         self.mixer = mixer.init()
 
@@ -83,37 +160,12 @@ class Launchscreen:
         
         font = pg.font.Font('fonts/crackman.ttf', 50)
 
-        #strings = [('PAC', WHITE, headingFont), ('MAN', GREEN, subheadingFont)]
-                   
-
-
-        #self.texts = [self.get_text(msg=s[0], color=s[1], font=s[2]) for s in strings]
-
-        # self.posns = [150, 230]
-        # alien = [60 * x + 400 for x in range(4)]
-        # self.posns.extend(alien)
-        # self.posns.append(730)
-       
-
-        #centerx = self.screen.get_rect().centerx
-
+     
         self.play_button = Button(self.screen, "Start Game")
         self.play_button.rect.top += 200
         self.play_button.prep_msg("Play Game")
 
-        #n = len(self.texts)
-        #self.rects = [self.get_text_rect(text=self.texts[i], centerx=centerx, centery=self.posns[i]) for i in range(n)]
-        
-
-    # def get_text(self, font, msg, color):
-    #     return font.render(msg, True, color, None)
-
-    # def get_text_rect(self, text, centerx, centery):
-    #     rect = text.get_rect()
-    #     rect.centerx = centerx
-    #     rect.centery = centery
-    #     return rect
-
+    
     def check_events(self):
         for e in pg.event.get():
             if e.type == pg.QUIT:
@@ -127,6 +179,8 @@ class Launchscreen:
                     self.landing_page_finished = True
                     self.title_music.stop()
                                                         
+    
+   
 
     def show(self):
         while not self.landing_page_finished:
@@ -135,18 +189,31 @@ class Launchscreen:
 
     def draw_text(self):
         pass
-        #n = len(self.texts)
-        # for i in range(n):
-        #     self.screen.blit(self.texts[i], self.rects[i])
+
+   
+        
+    def update(self):
+        pass
+        self.mygroup.update()
+        self.mygroup2.update()
+
 
     def draw(self):
-        #space_bg = pg.image.load(f'images/bg.png').convert()
-        #self.screen.fill(BLACK)
-        #self.screen.blit(space_bg, (0, 0))
-        self.Surface.fill(BLACK)
-        self.screen.blit(self.bigPacman,(self.x1,self.y1))
-        self.screen.blit(self.bigtitle, (self.titlex, self.titley))
+            self.mygroup.update()
+            self.mygroup2.update()
+            self.Surface.fill(BLACK)
+            self.screen.blit(self.bigPacman,(self.x1,self.y1))
+            self.screen.blit(self.bigtitle, (self.titlex, self.titley))
+            self.mygroup.draw(self.screen)
+            self.mygroup2.draw(self.screen)
+
+        
     
-        self.draw_text()
-        self.play_button.draw_button()
-        pg.display.flip()
+            self.draw_text()
+            self.play_button.draw_button()
+        
+            pg.display.update()
+            pg.display.flip()
+            self.clock.tick(20)
+      
+        
