@@ -39,12 +39,12 @@ class Ghost(Character):
         # else:
         #     self.next_dir = Direction.NONE
         #     self.timer_dict.switch_timer("up")
-        a = {0:Direction.UP, 1:Direction.RIGHT, 2:Direction.DOWN, 3:Direction.LEFT}
+        #a = {0:Direction.UP, 1:Direction.RIGHT, 2:Direction.DOWN, 3:Direction.LEFT}
 
-        if self.isMoving is False:
-            self.temp += 1
-            self.temp %= 4
-            self.next_dir = a[self.temp]
+        #if self.isMoving is False:
+        #    self.temp += 1
+        #    self.temp %= 4
+        #    self.next_dir = a[self.temp]
 
         if self.next_dir is Direction.UP:
             self.timer_dict.switch_timer("up")
@@ -61,12 +61,13 @@ class Ghost(Character):
 
 
 class Blinky(Ghost):
-    def __init__(self, game, images, scared_images, eye_images):
+    def __init__(self, game, images, scared_images, eye_images, pacman):
         super().__init__(game=game,screen=game.screen)
         self.pos = game.settings.blinky_start
         self.color = (255, 0, 0)
         self.screen = game.screen
-        self.next_dir = Direction.UP
+        self.graph = game.gameboard.graph
+        self.pacman = pacman
 
         self.movement_images = images
         self.scared_images = scared_images
@@ -78,6 +79,42 @@ class Blinky(Ghost):
                        "eye_forward":[eye_images[0]], "eye_up":[eye_images[1]],"eye_down":[eye_images[2]],"eye_left":[eye_images[3]],"eye_right":[eye_images[4]]}
 
         self.timer_dict = TimerDict(images_dict, "forward")
+
+    def next_move(self):
+        if self.isMoving:
+            return
+        pac_pos = self.pacman.target_pos
+        Q = []
+        neighbors = self.graph.get_neighbors(pac_pos)
+        for neighbor in neighbors:
+            Q.append((neighbor.pos, pac_pos))
+        visit = [pac_pos]
+        curr_pos = None
+        while True:
+            curr_pos = Q[0][0]
+            last_pos = Q[0][1]
+            visit.append(curr_pos)
+
+            if curr_pos == self.pos:
+                x = last_pos.x - curr_pos.x
+                y = last_pos.y - curr_pos.y
+                if x < 0: self.next_dir = Direction.LEFT
+                elif x > 0: self.next_dir = Direction.RIGHT
+                elif y < 0: self.next_dir = Direction.UP
+                elif y > 0: self.next_dir = Direction.DOWN
+                else: self.next_dir = Direction.NONE
+                return
+
+            if len(Q) < 2:
+                Q = []
+            else:
+                Q = Q[1:]
+            
+            neighbors = self.graph.get_neighbors(curr_pos)
+            for neighbor in neighbors:
+                if neighbor.pos not in visit:
+                    Q.append((neighbor.pos, curr_pos))
+            
 
 
 class Inky(Ghost):
@@ -98,6 +135,8 @@ class Inky(Ghost):
 
         self.timer_dict = TimerDict(images_dict, "forward")
 
+    def next_move(self): pass
+
 
 class Pinky(Ghost):
     def __init__(self, game, images, scared_images, eye_images):
@@ -116,6 +155,8 @@ class Pinky(Ghost):
                        "eye_forward":[eye_images[0]], "eye_up":[eye_images[1]],"eye_down":[eye_images[2]],"eye_left":[eye_images[3]],"eye_right":[eye_images[4]]}
 
         self.timer_dict = TimerDict(images_dict, "forward")
+
+    def next_move(self): pass
 
 
 class Clyde(Ghost):
@@ -136,6 +177,8 @@ class Clyde(Ghost):
 
         self.timer_dict = TimerDict(images_dict, "forward")
 
+    def next_move(self): pass
+
 
 class Ghosts:
     def __init__(self, game):
@@ -150,9 +193,10 @@ class Ghosts:
         scared_images = [self.ghost_images.get_sprite("Running_1.png"), self.ghost_images.get_sprite("Running_2.png"),
                          self.ghost_images.get_sprite("Flashing_1.png"), self.ghost_images.get_sprite("Flashing_2.png")]
 
-        self.ghosts = [Blinky(self.game, blinky_images, scared_images, eye_images), Inky(self.game, inky_images, scared_images, eye_images), 
+        self.ghosts = [Blinky(self.game, blinky_images, scared_images, eye_images, game.pacman), Inky(self.game, inky_images, scared_images, eye_images), 
                        Pinky(self.game, pinky_images, scared_images, eye_images), Clyde(self.game, clyde_images, scared_images, eye_images)]
 
     def update(self):
         for ghost in self.ghosts:
+            ghost.next_move()
             ghost.update()
