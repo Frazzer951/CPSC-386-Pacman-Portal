@@ -13,6 +13,7 @@ from sound import Sound
 
 class Game:
     def __init__(self):
+        pg.init()
         self.settings = Settings()
         size = self.settings.screen_width, self.settings.screen_height  # tuple
         self.screen = pg.display.set_mode(size=size)
