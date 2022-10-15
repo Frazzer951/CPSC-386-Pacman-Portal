@@ -27,7 +27,6 @@ def check_events(game):
         if event.type == pg.QUIT:
             sys.exit()
         elif event.type == pg.MOUSEBUTTONDOWN:
-            print(event.button)
             if event.button == 1:
                 game.gameboard.set_portal(game.pacman.start_pos, 1)
             elif event.button == 3:

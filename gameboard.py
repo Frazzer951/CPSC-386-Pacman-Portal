@@ -1,4 +1,3 @@
-from math import floor
 import pygame as pg
 
 from graph import Graph, NodeType
