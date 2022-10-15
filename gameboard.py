@@ -116,10 +116,14 @@ class Gameboard:
     def set_portal(self, pos, portal):
         node = self.graph.get_node_at(pos)
         if portal == 1:
+            if self.portal_1_placed:
+                self.graph.set_node_at(self.portal_1_pos, NodeType.NONE)
             self.portal_1_placed = True
             self.portal_1_pos = pos
             node.type = NodeType.PORTAL_1
         if portal == 2:
+            if self.portal_2_placed:
+                self.graph.set_node_at(self.portal_2_pos, NodeType.NONE)
             self.portal_2_placed = True
             self.portal_2_pos = pos
             node.type = NodeType.PORTAL_2
@@ -149,7 +153,6 @@ class Gameboard:
             if node.type == NodeType.PORTAL_2:
                 self.game.pacman.pos = self.portal_1_pos
                 self.clear_portals()
-            node.type = NodeType.NONE
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
