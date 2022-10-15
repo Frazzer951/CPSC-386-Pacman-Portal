@@ -1,3 +1,4 @@
+from math import floor
 import pygame as pg
 
 from graph import Graph, NodeType
@@ -14,6 +15,11 @@ class Gameboard:
         self.image = pg.transform.rotozoom(pg.image.load("./images/maze.png"), 0, 2.75)
         self.rect = self.image.get_rect()
         self.rect.center = (self.screen.get_width() // 2, self.screen.get_height() // 2)
+
+        self.portal_1_placed = False
+        self.portal_1_pos = Vector()
+        self.portal_2_placed = False
+        self.portal_2_pos = Vector()
 
         self.create_board()
 
@@ -107,15 +113,43 @@ class Gameboard:
             return Vector(0, 13)
         return None
 
+    def set_portal(self, pos, portal):
+        node = self.graph.get_node_at(pos)
+        if portal == 1:
+            self.portal_1_placed = True
+            self.portal_1_pos = pos
+            node.type = NodeType.PORTAL_1
+        if portal == 2:
+            self.portal_2_placed = True
+            self.portal_2_pos = pos
+            node.type = NodeType.PORTAL_2
+
+    def clear_portals(self):
+        self.portal_1_placed = False
+        self.portal_2_placed = False
+        self.graph.set_node_at(self.portal_1_pos, NodeType.NONE)
+        self.graph.set_node_at(self.portal_2_pos, NodeType.NONE)
+
     def pacman_collision_check(self, pos):
         node = self.graph.get_node_at(pos)
         if node.type == NodeType.POINT:
             self.game.scoreboard.increment_score(self.settings.point_orb_score)
+            node.type = NodeType.NONE
         if node.type == NodeType.POWER_UP:
             self.game.scoreboard.increment_score(self.settings.power_up_score)
+            node.type = NodeType.NONE
         if node.type == NodeType.FRUIT:
             self.game.scoreboard.increment_score(self.settings.fruit_score)
-        node.type = NodeType.NONE
+            node.type = NodeType.NONE
+
+        if self.portal_1_placed and self.portal_2_placed:
+            if node.type == NodeType.PORTAL_1:
+                self.game.pacman.pos = self.portal_2_pos
+                self.clear_portals()
+            if node.type == NodeType.PORTAL_2:
+                self.game.pacman.pos = self.portal_1_pos
+                self.clear_portals()
+            node.type = NodeType.NONE
 
     def draw(self):
         self.screen.blit(self.image, self.rect)

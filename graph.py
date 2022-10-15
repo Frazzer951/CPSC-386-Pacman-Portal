@@ -11,6 +11,8 @@ class NodeType(Enum):
     POINT = auto()
     POWER_UP = auto()
     FRUIT = auto()
+    PORTAL_1 = auto()
+    PORTAL_2 = auto()
     NONE = auto()
 
 
@@ -47,6 +49,10 @@ class Node:
             pg.draw.circle(screen, (255, 255, 255), pos, 5)
         if self.type == NodeType.FRUIT:
             pg.draw.circle(screen, (255, 0, 0), pos, 10)
+        if self.type == NodeType.PORTAL_1:
+            pg.draw.circle(screen, (0, 0, 255), pos, 10)
+        if self.type == NodeType.PORTAL_2:
+            pg.draw.circle(screen, (255, 165, 0), pos, 10)
 
 
 class Graph:
@@ -69,6 +75,12 @@ class Graph:
             if n.pos == pos:
                 return n
         return None
+
+    def set_node_at(self, pos, type):
+        for n in self.nodes:
+            if n.pos == pos:
+                n.type = type
+                return
 
     def add_node(self, pos):
         if not self.is_node_at(pos):
