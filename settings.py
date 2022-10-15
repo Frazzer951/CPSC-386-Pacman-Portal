@@ -19,3 +19,8 @@ class Settings:
         self.inky_start = Vector(12, 13)
         self.pinky_start = Vector(13, 13)
         self.clyde_start = Vector(14, 13)
+
+        # Points
+        self.point_orb_score = 10
+        self.power_up_score = 50
+        self.fruit_score = 100
