@@ -56,7 +56,7 @@ class Game:
             self.gameboard.draw()
             self.pacman.update()
             self.ghost.update()
-           
+
             pg.display.flip()
             elapsed = time() - start_time
             while elapsed < frametime:  # run with a max fps of 60
