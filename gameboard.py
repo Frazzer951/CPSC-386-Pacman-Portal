@@ -7,6 +7,7 @@ from vector import Vector
 class Gameboard:
     def __init__(self, game):
         self.game = game
+        self.settings = game.settings
         self.screen = game.screen
         self.graph: Graph = Graph()
 
@@ -105,6 +106,16 @@ class Gameboard:
         if pos == Vector(26, 13):
             return Vector(0, 13)
         return None
+
+    def pacman_collision_check(self, pos):
+        node = self.graph.get_node_at(pos)
+        if node.type == NodeType.POINT:
+            self.game.scoreboard.increment_score(self.settings.point_orb_score)
+        if node.type == NodeType.POWER_UP:
+            self.game.scoreboard.increment_score(self.settings.power_up_score)
+        if node.type == NodeType.FRUIT:
+            self.game.scoreboard.increment_score(self.settings.fruit_score)
+        node.type = NodeType.NONE
 
     def draw(self):
         self.screen.blit(self.image, self.rect)
