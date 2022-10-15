@@ -1,3 +1,4 @@
+import sys
 from decimal import HAVE_CONTEXTVAR
 from pickle import NONE
 from re import S
@@ -5,19 +6,19 @@ from struct import pack
 from tkinter import X
 from turtle import Screen
 from urllib.parse import SplitResult
+
 import pygame as pg
-import sys
-from button import Button
-from pygame import Surface, mixer
 import pygame.font
+from pygame import Surface, mixer
 import pygame, sys
 
 
+from button import Button
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (106, 233, 115)
-TRANSPARENT = (0,0,0,1.0)
+TRANSPARENT = (0, 0, 0, 1.0)
 
 
 
@@ -152,12 +153,12 @@ class Launchscreen():
 
         self.mixer = mixer.init()
 
-        self.title_music = pg.mixer.Sound('sounds/launch.mp3')
+        self.title_music = pg.mixer.Sound("sounds/launch.mp3")
         self.title_music.play()
         self.title_music.set_volume(0.2)
-        self.Surface = pg.display.set_mode((750,900))
+        self.Surface = pg.display.set_mode(size=(game.settings.screen_width, game.settings.screen_height))
         pg.font.init()
-        
+
         font = pg.font.Font('fonts/crackman.ttf', 50)
 
      
@@ -170,8 +171,8 @@ class Launchscreen():
         for e in pg.event.get():
             if e.type == pg.QUIT:
                 sys.exit()
-            if e.type == pg.KEYUP and e.key == pg.K_p:   # pretend PLAY BUTTON pressed
-                self.landing_page_finished = True        # TODO change to actual PLAY button
+            if e.type == pg.KEYUP and e.key == pg.K_p:  # pretend PLAY BUTTON pressed
+                self.landing_page_finished = True  # TODO change to actual PLAY button
                 self.music.stop()
             elif e.type == pg.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pg.mouse.get_pos()
@@ -185,7 +186,7 @@ class Launchscreen():
     def show(self):
         while not self.landing_page_finished:
             self.draw()
-            self.check_events()   # exits game if QUIT pressed
+            self.check_events()  # exits game if QUIT pressed
 
     def draw_text(self):
         pass
@@ -216,4 +217,3 @@ class Launchscreen():
             pg.display.flip()
             self.clock.tick(20)
       
-        

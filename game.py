@@ -4,8 +4,8 @@ import pygame as pg
 
 import game_functions as gf
 from gameboard import Gameboard
-from launch import Launchscreen
 from ghost import Ghosts
+from launch import Launchscreen
 from pacman import Pacman
 from scoreboard import Scoreboard
 from settings import Settings
@@ -18,8 +18,8 @@ class Game:
         size = self.settings.screen_width, self.settings.screen_height  # tuple
         self.screen = pg.display.set_mode(size=size)
 
-        #self.sound = Sound(bg_music="sounds/launch.mp3")
-        #self.scoreboard = Scoreboard(game=self)
+        # self.sound = Sound(bg_music="sounds/launch.mp3")
+        # self.scoreboard = Scoreboard(game=self)
 
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
