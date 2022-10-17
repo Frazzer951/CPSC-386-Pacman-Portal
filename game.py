@@ -5,6 +5,7 @@ import pygame as pg
 import game_functions as gf
 from gameboard import Gameboard
 from ghost import Ghosts
+from launch import Launchscreen
 from pacman import Pacman
 from scoreboard import Scoreboard
 from settings import Settings
@@ -18,8 +19,8 @@ class Game:
         size = self.settings.screen_width, self.settings.screen_height  # tuple
         self.screen = pg.display.set_mode(size=size)
 
-        # self.sound = Sound(bg_music="sounds/startrek.wav")
-        # self.scoreboard = Scoreboard(game=self)
+        # self.sound = Sound(bg_music="sounds/launch.mp3")
+        self.scoreboard = Scoreboard(game=self)
 
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
@@ -35,6 +36,9 @@ class Game:
 
     def reset(self):
         print("Resetting game...")
+        self.pacman.reset()
+        self.ghosts.reset()
+        self.gameboard.reset()
 
     def game_over(self):
         print("All Lives gone, GAME OVER!")
@@ -52,10 +56,7 @@ class Game:
         # self.sound.play_bg()
         frametime = 1 / 60
         self.timer = time()
-        while True:
-            if self.gameover:
-                break
-
+        while not self.gameover:
             start_time = time()
             gf.check_events(game=self)
             self.screen.fill(self.settings.bg_color)
@@ -69,7 +70,7 @@ class Game:
             self.gameboard.draw()
             self.pacman.update()
             self.ghost.update()
-
+            self.scoreboard.update()
 
             if self.settings.scared_mode is True:
                 self.scared_timer = time()
@@ -85,6 +86,8 @@ class Game:
 
 def main():
     g = Game()
+    ls = Launchscreen(game=g)
+    ls.show()
     g.play()
 
 

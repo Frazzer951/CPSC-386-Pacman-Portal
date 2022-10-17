@@ -16,18 +16,12 @@ class Pacman(Character):
 
         self.next_dir = Direction.NONE
 
-    def check_collision(self):
-        # if small dot
-        # if big dot
-        # if fruit
-        # if ghost (not scared)
-        # if ghost (scared)
-        pass
-
     def die(self):
         pass
 
     def update(self):
+        if not self.isMoving:
+            self.gameboard.pacman_collision_check(self.pos)
         self.move()
         self.draw()
 
