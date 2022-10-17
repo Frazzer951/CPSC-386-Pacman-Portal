@@ -63,11 +63,13 @@ class Game:
             if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
                 self.ghost.switch_mode()
                 self.timer_index += 1
-                self.timer = time()
+                self.timer = time() 
+
 
             self.gameboard.draw()
             self.pacman.update()
             self.ghost.update()
+
 
             if self.settings.scared_mode is True:
                 self.scared_timer = time()

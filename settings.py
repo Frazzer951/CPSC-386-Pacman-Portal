@@ -20,4 +20,4 @@ class Settings:
         self.pinky_start = Vector(13, 13)
         self.clyde_start = Vector(14, 13)
 
-        self.chase_mode = True
+        self.scared_mode = True
