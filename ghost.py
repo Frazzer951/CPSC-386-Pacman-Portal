@@ -33,10 +33,10 @@ class Ghosts:
             self.ghost_images.get_sprite("Flashing_2.png"),
         ]
 
-        self.ghosts = [Blinky(self.game, blinky_images, scared_images, eye_images, game.pacman)]
-        self.ghosts.append(Inky(self.game, inky_images, scared_images, eye_images, game.pacman, self.ghosts[0].pos))
-        self.ghosts.append(Pinky(self.game, pinky_images, scared_images, eye_images, game.pacman))
-        self.ghosts.append(Clyde(self.game, clyde_images, scared_images, eye_images, game.pacman))
+        self.ghosts = [Blinky(self.game, blinky_images, scared_images, eye_images)]
+        self.ghosts.append(Inky(self.game, inky_images, scared_images, eye_images, self.ghosts[0].pos))
+        self.ghosts.append(Pinky(self.game, pinky_images, scared_images, eye_images))
+        self.ghosts.append(Clyde(self.game, clyde_images, scared_images, eye_images))
 
     def switch_mode(self):
         for ghost in self.ghosts:
@@ -82,63 +82,14 @@ class Ghosts:
             ghost.update()
 
 
-# def next_move(pos, target_pos, curr_dir, graph):
-#     dists = []
-
-#     if curr_dir == Direction.UP: back_dir = Direction.DOWN
-#     elif curr_dir == Direction.LEFT: back_dir = Direction.RIGHT
-#     elif curr_dir == Direction.DOWN: back_dir = Direction.UP
-#     elif curr_dir == Direction.RIGHT: back_dir = Direction.LEFT
-#     else: back_dir = Direction.NONE
-
-#     # UP
-#     up_pos = Vector(pos.x, pos.y - 1)
-#     dist = (target_pos.x - up_pos.x) ** 2 + (target_pos.y - up_pos.y) ** 2
-#     dists.append((dist, up_pos, Direction.UP))
-#     # LEFT
-#     left_pos = Vector(pos.x - 1, pos.y)
-#     dist = (target_pos.x - left_pos.x) ** 2 + (target_pos.y - left_pos.y) ** 2
-#     dists.append((dist, left_pos, Direction.LEFT))
-#     # DOWN
-#     down_pos = Vector(pos.x, pos.y + 1)
-#     dist = (target_pos.x - down_pos.x) ** 2 + (target_pos.y - down_pos.y) ** 2
-#     dists.append((dist, down_pos, Direction.DOWN))
-#     # RIGHT
-#     right_pos = Vector(pos.x + 1, pos.y)
-#     dist = (target_pos.x - right_pos.x) ** 2 + (target_pos.y - right_pos.y) ** 2
-#     dists.append((dist, right_pos, Direction.RIGHT))
-
-#     dists = sorted(dists, key = lambda x: x[0])
-#     for i in range(1, len(dists)):
-#         if i > 0 and dists[i][0] == dists[i - 1][0]:
-#             if dists[i][2] is Direction.UP:
-#                 dists[i], dists[i - 1] = dists[i - 1], dists[i]
-#             elif dists[i][2] is Direction.LEFT and dists[i - 1][2] is not Direction.UP:
-#                 dists[i], dists[i - 1] = dists[i - 1], dists[i]
-#             elif dists[i][2] is Direction.DOWN and dists[i - 1][2] is not Direction.UP and dists[i - 1][2] is not Direction.LEFT:
-#                 dists[i], dists[i - 1] = dists[i - 1], dists[i]
-#             i -= 1
-
-#     for dir in dists:
-#         node = graph.get_node_at(up_pos)
-#         if node is not None and dir[1] == node.pos and dir[2] is not back_dir and up_pos != Vector(11, 9) and up_pos != Vector(14, 9) and up_pos != Vector(11, 21) and up_pos != Vector(14, 21):
-#             return dir[2]
-#         node = graph.get_node_at(left_pos)
-#         if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-#             return dir[2]
-#         node = graph.get_node_at(down_pos)
-#         if node is not None and dir[1] == node.pos and dir[2] is not back_dir and down_pos != Vector(12, 11) and down_pos != Vector(13, 11):
-#             return dir[2]
-#         node = graph.get_node_at(right_pos)
-#         if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-#             return dir[2]
-
-
 class Ghost(Character):
-    def __init__(self, game, screen):
+    def __init__(self, game):
         super().__init__(game=game)
         self.gameboard = game.gameboard
-        self.screen = screen
+        self.graph = game.gameboard.graph
+        self.screen = game.screen
+        self.pacman = game.pacman
+
         self.movement_images = ()
         self.scared_images = ()
         self.eye_images = ()
@@ -147,7 +98,6 @@ class Ghost(Character):
         self.scared = False
         self.just_scared = False
         self.eaten = False
-        # self.pos = Vector(0, 0)
         self.color = (0, 0, 0)
         self.screen = game.screen
         self.timer_dict = {}
@@ -155,8 +105,7 @@ class Ghost(Character):
         self.temp = 0
 
     def scared_move(self):
-        if self.eaten:
-            # To be implemented
+        if self.eaten:  # To be implemented
             pos = self.pos
             target_pos = Vector(13, 13)
             if pos == target_pos:
@@ -322,13 +271,10 @@ class Ghost(Character):
 
 
 class Blinky(Ghost):
-    def __init__(self, game, images, scared_images, eye_images, pacman):
-        super().__init__(game=game, screen=game.screen)
+    def __init__(self, game, images, scared_images, eye_images):
+        super().__init__(game=game)
         self.pos = game.settings.blinky_start
         self.color = (255, 0, 0)
-        self.screen = game.screen
-        self.graph = game.gameboard.graph
-        self.pacman = pacman
 
         self.movement_images = images
         self.scared_images = scared_images
@@ -447,13 +393,10 @@ class Blinky(Ghost):
 
 
 class Inky(Ghost):
-    def __init__(self, game, images, scared_images, eye_images, pacman, blinky):
-        super().__init__(game=game, screen=game.screen)
+    def __init__(self, game, images, scared_images, eye_images, blinky):
+        super().__init__(game=game)
         self.pos = game.settings.inky_start
         self.color = (0, 255, 0)
-        self.screen = game.screen
-        self.graph = game.gameboard.graph
-        self.pacman = pacman
         self.blinky_pos = blinky
 
         self.movement_images = images
@@ -584,13 +527,10 @@ class Inky(Ghost):
 
 
 class Pinky(Ghost):
-    def __init__(self, game, images, scared_images, eye_images, pacman):
-        super().__init__(game=game, screen=game.screen)
+    def __init__(self, game, images, scared_images, eye_images):
+        super().__init__(game=game)
         self.pos = game.settings.pinky_start
         self.color = (0, 0, 255)
-        self.screen = game.screen
-        self.graph = game.gameboard.graph
-        self.pacman = pacman
 
         self.movement_images = images
         self.scared_images = scared_images
@@ -718,13 +658,10 @@ class Pinky(Ghost):
 
 
 class Clyde(Ghost):
-    def __init__(self, game, images, scared_images, eye_images, pacman):
-        super().__init__(game=game, screen=game.screen)
+    def __init__(self, game, images, scared_images, eye_images):
+        super().__init__(game=game)
         self.pos = game.settings.clyde_start
         self.color = (255, 255, 255)
-        self.screen = game.screen
-        self.graph = game.gameboard.graph
-        self.pacman = pacman
 
         self.movement_images = images
         self.scared_images = scared_images
