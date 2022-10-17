@@ -44,6 +44,15 @@ class Animation1(pygame.sprite.Sprite):
 
         self.currentsprite1 = 0
         self.image = self.sprites1[self.currentsprite1]
+<<<<<<< HEAD
+=======
+
+        self.x = 650
+        self.y= 450
+    
+        self.rect = pg.Rect(self.x, self.y, 350, 100)
+       
+>>>>>>> 24f200b (update animation)
         
         self.rect = pg.Rect(200, 500, 350, 100)
         #--------------------------------------------------
@@ -96,9 +105,16 @@ class Animation2(pygame.sprite.Sprite):
         self.currentsprite2 = 0
         self.image = self.sprites2[self.currentsprite2]
 
+<<<<<<< HEAD
         self.rect = pg.Rect(200, 350, 350, 100)
 
 
+=======
+        self.x = -100
+        self.y= 350
+        self.rect = pg.Rect(self.x, self.y, 350, 100)
+        #------------------------------------------------------------
+>>>>>>> 24f200b (update animation)
        
     def update(self):
         self.currentsprite2 += 1
@@ -116,6 +132,7 @@ class Animation2(pygame.sprite.Sprite):
 
 
 
+<<<<<<< HEAD
 class Launchscreen:
     pacman = pg.image.load(f"images/Pac-Man-0.png")
     title = pg.image.load("images/title.png")
@@ -125,8 +142,14 @@ class Launchscreen:
     # font = pg.font.Font('fonts/8-Bit Madness.ttf', 30)
 
     x1 = 290
+=======
+    
+    #font = pg.font.Font('fonts/8-Bit Madness.ttf', 30)
+   
+    x1 = 240
+>>>>>>> 24f200b (update animation)
     y1 = 160
-    titlex = 60
+    titlex = 10
     titley = -80
 
     def __init__(self, game):
@@ -149,13 +172,17 @@ class Launchscreen:
         self.title_music = pg.mixer.Sound("sounds/launch.mp3")
         self.title_music.play()
         self.title_music.set_volume(0.2)
+<<<<<<< HEAD
         self.Surface = pg.display.set_mode(size=(game.settings.screen_width, game.settings.screen_height))
+=======
+        self.Surface = pg.display.set_mode((650,800))
+>>>>>>> 24f200b (update animation)
         pg.font.init()
 
         font = pg.font.Font("fonts/crackman.ttf", 50)
 
         self.play_button = Button(self.screen, "Start Game")
-        self.play_button.rect.top += 200
+        self.play_button.rect.top += 230
         self.play_button.prep_msg("Play Game")
 
     def check_events(self):
