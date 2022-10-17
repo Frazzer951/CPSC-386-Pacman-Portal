@@ -25,6 +25,12 @@ class Game:
         self.pacman = Pacman(game=self)
         self.ghost = Ghosts(game=self)
 
+        self.times = [7.0,20.0,7.0,20.0,5.0,20.0,5.0]
+        self.timer = 0.0
+        self.timer_index = 0
+        self.scared_time = 10.0
+        self.scared_timer = 0.0
+
         self.gameover = False
 
     def reset(self):
@@ -45,6 +51,7 @@ class Game:
     def play(self):
         # self.sound.play_bg()
         frametime = 1 / 60
+        self.timer = time()
         while True:
             if self.gameover:
                 break
@@ -53,9 +60,20 @@ class Game:
             gf.check_events(game=self)
             self.screen.fill(self.settings.bg_color)
 
+            if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
+                self.ghost.switch_mode()
+                self.timer_index += 1
+                self.timer = time()
+
             self.gameboard.draw()
             self.pacman.update()
             self.ghost.update()
+
+            if self.settings.scared_mode is True:
+                self.scared_timer = time()
+                self.settings.scared_mode = False
+            elif time() - self.scared_timer > self.scared_time:
+                self.ghost.unscare()                    
 
             pg.display.flip()
             elapsed = time() - start_time
