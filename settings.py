@@ -21,7 +21,7 @@ class Settings:
         self.clyde_start = Vector(14, 13)
 
         self.scared_mode = True
-  
+
         # Points
         self.point_orb_score = 10
         self.power_up_score = 50

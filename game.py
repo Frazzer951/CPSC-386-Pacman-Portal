@@ -26,7 +26,7 @@ class Game:
         self.pacman = Pacman(game=self)
         self.ghost = Ghosts(game=self)
 
-        self.times = [7.0,20.0,7.0,20.0,5.0,20.0,5.0]
+        self.times = [7.0, 20.0, 7.0, 20.0, 5.0, 20.0, 5.0]
         self.timer = 0.0
         self.timer_index = 0
         self.scared_time = 10.0
@@ -64,8 +64,7 @@ class Game:
             if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
                 self.ghost.switch_mode()
                 self.timer_index += 1
-                self.timer = time() 
-
+                self.timer = time()
 
             self.gameboard.draw()
             self.pacman.update()
@@ -76,7 +75,7 @@ class Game:
                 self.scared_timer = time()
                 self.settings.scared_mode = False
             elif time() - self.scared_timer > self.scared_time:
-                self.ghost.unscare()                    
+                self.ghost.unscare()
 
             pg.display.flip()
             elapsed = time() - start_time
