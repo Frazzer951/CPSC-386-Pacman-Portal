@@ -1,13 +1,86 @@
 from random import randint
 from time import time
 
-import pygame as pg
-
 import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet
 from timer import TimerDict
 from vector import Vector
+
+
+class Ghosts:
+    def __init__(self, game):
+        self.game = game
+
+        self.times = [7.0, 20.0, 7.0, 20.0, 5.0, 20.0, 5.0]
+        self.timer = 0.0
+        self.timer_index = 0
+
+        self.scared_time = 10.0
+        self.scared_timer = 0.0
+        self.scared_mode = False
+
+        self.ghost_images = SpriteSheet("images/ghosts.png", "ghosts_spritesheet.json")
+        blinky_images = [self.ghost_images.get_sprite(f"Blinky_{n}.png") for n in range(1, 11)]
+        inky_images = [self.ghost_images.get_sprite(f"Inky_{n}.png") for n in range(1, 11)]
+        pinky_images = [self.ghost_images.get_sprite(f"Pinky_{n}.png") for n in range(1, 11)]
+        clyde_images = [self.ghost_images.get_sprite(f"Clyde_{n}.png") for n in range(1, 11)]
+        eye_images = [self.ghost_images.get_sprite(f"Eyes_{n}.png") for n in range(1, 6)]
+        scared_images = [
+            self.ghost_images.get_sprite("Running_1.png"),
+            self.ghost_images.get_sprite("Running_2.png"),
+            self.ghost_images.get_sprite("Flashing_1.png"),
+            self.ghost_images.get_sprite("Flashing_2.png"),
+        ]
+
+        self.ghosts = [Blinky(self.game, blinky_images, scared_images, eye_images, game.pacman)]
+        self.ghosts.append(Inky(self.game, inky_images, scared_images, eye_images, game.pacman, self.ghosts[0].pos))
+        self.ghosts.append(Pinky(self.game, pinky_images, scared_images, eye_images, game.pacman))
+        self.ghosts.append(Clyde(self.game, clyde_images, scared_images, eye_images, game.pacman))
+
+    def switch_mode(self):
+        for ghost in self.ghosts:
+            ghost.switch = True
+
+            if ghost.dir is Direction.UP:
+                ghost.next_dir = Direction.DOWN
+            elif ghost.dir is Direction.LEFT:
+                ghost.next_dir = Direction.RIGHT
+            elif ghost.dir is Direction.DOWN:
+                ghost.next_dir = Direction.UP
+            elif ghost.dir is Direction.RIGHT:
+                ghost.next_dir = Direction.LEFT
+            else:
+                ghost.next_dir = Direction.NONE
+
+    def unscare(self):
+        for ghost in self.ghosts:
+            ghost.scared = False
+
+    def scare(self):
+        for ghost in self.ghosts:
+            ghost.scared = True
+
+    def update(self):
+        if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
+            self.switch_mode()
+            self.timer_index += 1
+            self.timer = time()
+
+        if self.scared_mode is True:
+            self.scared_timer = time()
+            self.scared_mode = False
+            self.scare()
+        elif time() - self.scared_timer > self.scared_time:
+            self.unscare()
+
+        for ghost in self.ghosts:
+            if ghost.scared:
+                ghost.scared_move()
+            else:
+                ghost.move_to()
+            ghost.update()
+
 
 # def next_move(pos, target_pos, curr_dir, graph):
 #     dists = []
@@ -770,77 +843,3 @@ class Clyde(Ghost):
                 if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
                     self.next_dir = dir[2]
                     return
-
-
-class Ghosts:
-    def __init__(self, game):
-        self.game = game
-
-        self.times = [7.0, 20.0, 7.0, 20.0, 5.0, 20.0, 5.0]
-        self.timer = 0.0
-        self.timer_index = 0
-
-        self.scared_time = 10.0
-        self.scared_timer = 0.0
-        self.scared_mode = False
-
-        self.ghost_images = SpriteSheet("images/ghosts.png", "ghosts_spritesheet.json")
-        blinky_images = [self.ghost_images.get_sprite(f"Blinky_{n}.png") for n in range(1, 11)]
-        inky_images = [self.ghost_images.get_sprite(f"Inky_{n}.png") for n in range(1, 11)]
-        pinky_images = [self.ghost_images.get_sprite(f"Pinky_{n}.png") for n in range(1, 11)]
-        clyde_images = [self.ghost_images.get_sprite(f"Clyde_{n}.png") for n in range(1, 11)]
-        eye_images = [self.ghost_images.get_sprite(f"Eyes_{n}.png") for n in range(1, 6)]
-        scared_images = [
-            self.ghost_images.get_sprite("Running_1.png"),
-            self.ghost_images.get_sprite("Running_2.png"),
-            self.ghost_images.get_sprite("Flashing_1.png"),
-            self.ghost_images.get_sprite("Flashing_2.png"),
-        ]
-
-        self.ghosts = [Blinky(self.game, blinky_images, scared_images, eye_images, game.pacman)]
-        self.ghosts.append(Inky(self.game, inky_images, scared_images, eye_images, game.pacman, self.ghosts[0].pos))
-        self.ghosts.append(Pinky(self.game, pinky_images, scared_images, eye_images, game.pacman))
-        self.ghosts.append(Clyde(self.game, clyde_images, scared_images, eye_images, game.pacman))
-
-    def switch_mode(self):
-        for ghost in self.ghosts:
-            ghost.switch = True
-
-            if ghost.dir is Direction.UP:
-                ghost.next_dir = Direction.DOWN
-            elif ghost.dir is Direction.LEFT:
-                ghost.next_dir = Direction.RIGHT
-            elif ghost.dir is Direction.DOWN:
-                ghost.next_dir = Direction.UP
-            elif ghost.dir is Direction.RIGHT:
-                ghost.next_dir = Direction.LEFT
-            else:
-                ghost.next_dir = Direction.NONE
-
-    def unscare(self):
-        for ghost in self.ghosts:
-            ghost.scared = False
-
-    def scare(self):
-        for ghost in self.ghosts:
-            ghost.scared = True
-
-    def update(self):
-        if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
-            self.switch_mode()
-            self.timer_index += 1
-            self.timer = time()
-
-        if self.scared_mode is True:
-            self.scared_timer = time()
-            self.scared_mode = False
-            self.scare()
-        elif time() - self.scared_timer > self.scared_time:
-            self.unscare()
-
-        for ghost in self.ghosts:
-            if ghost.scared:
-                ghost.scared_move()
-            else:
-                ghost.move_to()
-            ghost.update()
