@@ -5,7 +5,7 @@ class Timer:
     def __init__(
         self,
         frames,
-        wait=100,
+        wait=300,
         frameindex=0,
         step=1,  # imagerect frames
         looponce=False,

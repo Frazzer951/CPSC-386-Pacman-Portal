@@ -15,11 +15,13 @@ class Settings:
         self.pacman_start = Vector(12, 22)
 
         # Ghost settings
-        self.blinky_start = Vector(11, 13)
+        self.blinky_start = Vector(12, 10)
         self.inky_start = Vector(12, 13)
         self.pinky_start = Vector(13, 13)
         self.clyde_start = Vector(14, 13)
 
+        self.scared_mode = True
+  
         # Points
         self.point_orb_score = 10
         self.power_up_score = 50
