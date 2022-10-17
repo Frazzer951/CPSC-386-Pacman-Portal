@@ -1,4 +1,5 @@
 from random import randint
+from time import time
 
 import pygame as pg
 
@@ -775,6 +776,14 @@ class Ghosts:
     def __init__(self, game):
         self.game = game
 
+        self.times = [7.0, 20.0, 7.0, 20.0, 5.0, 20.0, 5.0]
+        self.timer = 0.0
+        self.timer_index = 0
+
+        self.scared_time = 10.0
+        self.scared_timer = 0.0
+        self.scared_mode = False
+
         self.ghost_images = SpriteSheet("images/ghosts.png", "ghosts_spritesheet.json")
         blinky_images = [self.ghost_images.get_sprite(f"Blinky_{n}.png") for n in range(1, 11)]
         inky_images = [self.ghost_images.get_sprite(f"Inky_{n}.png") for n in range(1, 11)]
@@ -812,15 +821,24 @@ class Ghosts:
         for ghost in self.ghosts:
             ghost.scared = False
 
+    def scare(self):
+        for ghost in self.ghosts:
+            ghost.scared = True
+
     def update(self):
-        for event in pg.event.get():
-            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                self.game.settings.scared_mode = True
-                for ghost in self.ghosts:
-                    ghost.scared = True
+        if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
+            self.switch_mode()
+            self.timer_index += 1
+            self.timer = time()
+
+        if self.scared_mode is True:
+            self.scared_timer = time()
+            self.scared_mode = False
+            self.scare()
+        elif time() - self.scared_timer > self.scared_time:
+            self.unscare()
 
         for ghost in self.ghosts:
-
             if ghost.scared:
                 ghost.scared_move()
             else:

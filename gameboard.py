@@ -140,6 +140,7 @@ class Gameboard:
             node.type = NodeType.NONE
         if node.type == NodeType.POWER_UP:
             self.game.scoreboard.increment_score(self.settings.power_up_score)
+            self.game.ghosts.scared_mode = True
             node.type = NodeType.NONE
         if node.type == NodeType.FRUIT:
             self.game.scoreboard.increment_score(self.settings.fruit_score)
