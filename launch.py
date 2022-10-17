@@ -11,29 +11,24 @@ import pygame
 import pygame as pg
 import pygame.font
 from pygame import Surface, mixer
+import pygame.font
+import pygame, sys
 
 from button import Button
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (106, 233, 115)
-TRANSPARENT = (0, 0, 0, 1.0)
+TRANSPARENT = (0,0,0,1.0)
 
 
+
+ 
 class Animation1(pygame.sprite.Sprite):
-    def __init__(self, game):
+    def __init__(self, game ):
         super().__init__()
-        #
-        # self.x = x
-        # self.y = y
-        # self.end = end
-
-        # self.path = [self.x, self.y]
-        # self.vel = 3
-        #
-
         self.screen = game.screen
-        # --------------------------------------------------
+        #--------------------------------------------------
         self.sprites1 = []
         self.menu0 = pg.image.load("images/menu0.png")
         fixedmenu0 = pg.transform.scale(self.menu0, (350, 100))
@@ -49,20 +44,24 @@ class Animation1(pygame.sprite.Sprite):
 
         self.currentsprite1 = 0
         self.image = self.sprites1[self.currentsprite1]
-
+        
         self.rect = pg.Rect(200, 500, 350, 100)
-        # --------------------------------------------------
-
+        #--------------------------------------------------
+        
     # def move(self):
     #     if self.vel > 0:
     #         if self.x + self.vel < self.path[1]:
     #             self.x += self.vel
-
+    
+    
+        
     def update(self):
-        self.currentsprite1 += 1
 
+        self.currentsprite1 += 1
+        
         if self.currentsprite1 >= len(self.sprites1):
             self.currentsprite1 = 0
+            self.rect.x -= 15
         self.image = self.sprites1[self.currentsprite1]
 
 
@@ -70,15 +69,13 @@ class Animation1(pygame.sprite.Sprite):
 ###
 #
 #
-# ___))ONJKBHFUYIUHIKFG
-
+#___))ONJKBHFUYIUHIKFG
 
 class Animation2(pygame.sprite.Sprite):
     def __init__(self, game):
         super().__init__()
-        #
         self.screen = game.screen
-
+        
         self.sprites2 = []
         self.menu3 = pg.image.load("images/menu3.png")
         fixedmenu3 = pg.transform.scale(self.menu3, (350, 100))
@@ -101,12 +98,22 @@ class Animation2(pygame.sprite.Sprite):
 
         self.rect = pg.Rect(200, 350, 350, 100)
 
+
+       
     def update(self):
         self.currentsprite2 += 1
 
         if self.currentsprite2 >= len(self.sprites2):
             self.currentsprite2 = 0
+            self.rect.x += 15
         self.image = self.sprites2[self.currentsprite2]
+        
+
+        
+       
+
+
+
 
 
 class Launchscreen:
@@ -133,9 +140,9 @@ class Launchscreen:
         self.mygroup2 = pg.sprite.Group(self.myanimation2)
         self.clock = pg.time.Clock()
         #
-
+        
         #
-        # self.animation_1 = Animation(500,200, game=self)
+        #self.animation_1 = Animation(500,200, game=self)
 
         self.mixer = mixer.init()
 
@@ -163,6 +170,9 @@ class Launchscreen:
                 if self.play_button.rect.collidepoint(mouse_x, mouse_y):
                     self.landing_page_finished = True
                     self.title_music.stop()
+                                                        
+    
+   
 
     def show(self):
         while not self.landing_page_finished:
@@ -186,9 +196,13 @@ class Launchscreen:
         self.mygroup.draw(self.screen)
         self.mygroup2.draw(self.screen)
 
+        
+    
         self.draw_text()
         self.play_button.draw_button()
-
+    
         pg.display.update()
         pg.display.flip()
         self.clock.tick(20)
+      
+        
