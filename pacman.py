@@ -11,6 +11,7 @@ class Pacman(Character):
         self.lives = 4
         self.pos = game.settings.pacman_start
         self.start_pos = self.pos
+        self.target_pos = game.settings.pacman_start
         # self.image = pg.image.load('images/pacman.bmp')
         # self.rect = self.image.get_rect()
 
