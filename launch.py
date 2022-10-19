@@ -125,6 +125,7 @@ class Animation2(pygame.sprite.Sprite):
         self.image = self.sprites2[self.currentsprite2]
         
 
+<<<<<<< HEAD
         
        
 
@@ -145,6 +146,101 @@ class Launchscreen:
 =======
     
     #font = pg.font.Font('fonts/8-Bit Madness.ttf', 30)
+=======
+class IntroduceBlinky:
+
+    pg.font.init()
+
+    def __init__(self, game):
+
+        self.surface = game.screen
+        self.smallblinky = pg.image.load(f'images/blinky0.png')
+        self.blinky = pg.transform.scale(self.smallblinky, (120,120))
+        
+        self.font = pg.font.Font('fonts/crackman.ttf',32 )
+
+        self.blinkytext = self.font.render('"Blinky"',True,(255, 0, 0)  )
+
+  
+    def draw(self):
+        self.surface.blit(self.blinky, (265,350))
+        self.surface.blit(self.blinkytext, (250, 500))
+        
+
+
+class IntroducePinky:
+    pg.font.init()
+
+    def __init__(self, game):
+
+        self.surface = game.screen
+        self.smallPinky = pg.image.load(f'images/pinky0.png')
+        self.pinky = pg.transform.scale(self.smallPinky, (120,120))
+        
+        self.font = pg.font.Font('fonts/crackman.ttf',32 )
+
+        self.pinkytext = self.font.render('"Pinky"',True,('#FFB8FF'))
+
+  
+    def draw(self):
+        self.surface.blit(self.pinky, (265,350))
+        self.surface.blit(self.pinkytext, (255, 500))
+
+class IntroduceInky:
+    pg.font.init()
+
+    def __init__(self, game):
+
+        self.surface = game.screen
+        self.smallinky = pg.image.load(f'images/inky0.png')
+        self.inky = pg.transform.scale(self.smallinky, (120,120))
+        
+        self.font = pg.font.Font('fonts/crackman.ttf',32 )
+
+        self.inkytext = self.font.render('"Inky"',True,('#00FFFF')  )
+
+  
+    def draw(self):
+        self.surface.blit(self.inky, (265,350))
+        self.surface.blit(self.inkytext, (265, 500))
+
+class IntroduceClyde:
+    pg.font.init()
+
+    def __init__(self, game):
+
+        self.surface = game.screen
+        self.smallClyde = pg.image.load(f'images/clyde0.png')
+        self.clyde = pg.transform.scale(self.smallClyde, (120,120))
+        
+        self.font = pg.font.Font('fonts/crackman.ttf',32 )
+
+        self.clydetext = self.font.render('"Clyde"',True,('#FFB852')  )
+
+  
+    def draw(self):
+        self.surface.blit(self.clyde, (265,350))
+        self.surface.blit(self.clydetext, (255, 500))
+
+class Howhigh:
+    pg.font.init()
+    def __init__(self, game):
+        self.surface = game.screen
+        self.font = pg.font.Font('fonts/crackman.ttf', 42)
+        self.howhigh = self.font.render('How high can you score?',True,(249, 241, 0))
+    def draw(self):
+        self.surface.blit(self.howhigh, (40, 420))
+        
+       
+
+class Launchscreen():
+    pacman = pg.image.load(f'images/Pac-Man-0.png')
+    title = pg.image.load('images/title.png')
+    bigPacman = pg.transform.scale(pacman, (150,150))
+    bigtitle = pg.transform.scale(title, (653,436))
+    pg.font.init()
+
+>>>>>>> 3dc5ca4 (all animations in. only need to work on highscores)
    
     x1 = 240
 >>>>>>> 24f200b (update animation)
@@ -158,6 +254,12 @@ class Launchscreen:
 
         self.myanimation = Animation1(game=self)
         self.myanimation2 = Animation2(game=self)
+        self.showblinky = IntroduceBlinky(game=self)
+        self.showInky = IntroduceInky(game=self)
+        self.showPinky = IntroducePinky(game=self)
+        self.showClyde = IntroduceClyde(game=self)
+        self.howHigh = Howhigh(game=self)
+        
 
         self.mygroup = pg.sprite.Group(self.myanimation)
         self.mygroup2 = pg.sprite.Group(self.myanimation2)
@@ -178,6 +280,7 @@ class Launchscreen:
         self.Surface = pg.display.set_mode((650,800))
 >>>>>>> 24f200b (update animation)
         pg.font.init()
+<<<<<<< HEAD
 
         font = pg.font.Font("fonts/crackman.ttf", 50)
 
@@ -185,6 +288,14 @@ class Launchscreen:
         self.play_button.rect.top += 230
         self.play_button.prep_msg("Play Game")
 
+=======
+        
+     
+        self.play_button = Button(self.screen, "Start Game")
+        self.play_button.rect.top += 230
+        self.play_button.prep_msg("Play Game")
+   
+>>>>>>> 3dc5ca4 (all animations in. only need to work on highscores)
     def check_events(self):
         for e in pg.event.get():
             if e.type == pg.QUIT:
@@ -213,6 +324,12 @@ class Launchscreen:
         pass
         self.mygroup.update()
         self.mygroup2.update()
+        self.showblinky.update()
+        self.showClyde.update()
+        self.showInky.update()
+        self.showPinky.update()
+        
+    
 
     def draw(self):
         self.mygroup.update()
@@ -223,6 +340,7 @@ class Launchscreen:
         self.mygroup.draw(self.screen)
         self.mygroup2.draw(self.screen)
 
+<<<<<<< HEAD
         
     
         self.draw_text()
@@ -233,3 +351,35 @@ class Launchscreen:
         self.clock.tick(20)
       
         
+=======
+            
+            self.current_time=0
+            self.current_time= pg.time.get_ticks()
+            if self.current_time >= 5500 and self.current_time <= 7500:
+                self.showblinky.draw()
+            if self.current_time >= 7500 and self.current_time <= 9500:
+                self.showPinky.draw()
+            if self.current_time >= 9500 and self.current_time <= 11500:
+                self.showInky.draw()
+            if self.current_time >= 11500 and self.current_time <= 13000:
+                self.showClyde.draw()
+            if self.current_time >= 13000 and self.current_time <=13500:
+                self.howHigh.draw()
+            if self.current_time >= 14000 and self.current_time <=14500:
+                self.howHigh.draw()
+            if self.current_time >= 15000 and self.current_time <=15500:
+                self.howHigh.draw()
+            if self.current_time >= 16000 and self.current_time <=16500:
+                self.howHigh.draw()
+            if self.current_time >= 17000 and self.current_time <=17500:
+                self.howHigh.draw()
+                
+            self.current_time = pg.time.get_ticks()
+
+            self.draw_text()
+            self.play_button.draw_button()
+        
+            pg.display.update()
+            pg.display.flip()
+            self.clock.tick(45)
+>>>>>>> 3dc5ca4 (all animations in. only need to work on highscores)
