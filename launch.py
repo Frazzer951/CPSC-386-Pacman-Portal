@@ -1,20 +1,11 @@
 import sys
-from decimal import HAVE_CONTEXTVAR
-from pickle import NONE
-from re import S
-from struct import pack
-from tkinter import X
-from turtle import Screen
-from urllib.parse import SplitResult
 
-import pygame
 import pygame as pg
-import pygame.font
-from pygame import Surface, mixer
-import pygame.font
-import pygame, sys
+from pygame import mixer
+from pygame.sprite import Sprite
 
 from button import Button
+from timer import Timer
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -22,177 +13,120 @@ GREEN = (106, 233, 115)
 TRANSPARENT = (0, 0, 0, 1.0)
 
 
-class Animation1(pygame.sprite.Sprite):
+class Animation1(Sprite):
     def __init__(self, game):
         super().__init__()
         self.screen = game.screen
-        # --------------------------------------------------
-        self.sprites1 = []
-        self.menu0 = pg.image.load("images/menu0.png")
-        fixedmenu0 = pg.transform.scale(self.menu0, (350, 100))
-        self.sprites1.append(fixedmenu0)
 
-        self.menu1 = pg.image.load("images/menu1.png")
-        fixedmenu1 = pg.transform.scale(self.menu1, (350, 100))
-        self.sprites1.append(fixedmenu1)
-
-        self.menu2 = pg.image.load("images/menu2.png")
-        fixedmenu2 = pg.transform.scale(self.menu2, (350, 100))
-        self.sprites1.append(fixedmenu2)
-
-        self.currentsprite1 = 0
-        self.image = self.sprites1[self.currentsprite1]
+        self.menu = [
+            pg.transform.scale(pg.image.load("images/menu0.png"), (350, 100)),
+            pg.transform.scale(pg.image.load("images/menu1.png"), (350, 100)),
+            pg.transform.scale(pg.image.load("images/menu2.png"), (350, 100)),
+        ]
+        self.timer = Timer(self.menu, oscillating=True)
 
         self.x = 650
         self.y = 450
 
         self.rect = pg.Rect(self.x, self.y, 350, 100)
 
-        # --------------------------------------------------
-
-    # def move(self):
-    #     if self.vel > 0:
-    #         if self.x + self.vel < self.path[1]:
-    #             self.x += self.vel
-
     def update(self):
+        self.rect.x -= 5
 
-        self.currentsprite1 += 1
-
-        if self.currentsprite1 >= len(self.sprites1):
-            self.currentsprite1 = 0
-            self.rect.x -= 15
-        self.image = self.sprites1[self.currentsprite1]
-
-
-#
-###
-#
-#
-# ___))ONJKBHFUYIUHIKFG
+    def draw(self):
+        self.timer.advance_frame_index()
+        image = self.timer.imagerect()
+        rect = image.get_rect()
+        rect.left, rect.top = self.rect.left, self.rect.top
+        self.screen.blit(image, rect)
 
 
-class Animation2(pygame.sprite.Sprite):
+class Animation2(Sprite):
     def __init__(self, game):
         super().__init__()
         self.screen = game.screen
 
-        self.sprites2 = []
-        self.menu3 = pg.image.load("images/menu3.png")
-        fixedmenu3 = pg.transform.scale(self.menu3, (350, 100))
-        self.sprites2.append(fixedmenu3)
-
-        self.menu4 = pg.image.load("images/menu4.png")
-        fixedmenu4 = pg.transform.scale(self.menu4, (350, 100))
-        self.sprites2.append(fixedmenu4)
-
-        self.menu5 = pg.image.load("images/menu5.png")
-        fixedmenu5 = pg.transform.scale(self.menu5, (350, 100))
-        self.sprites2.append(fixedmenu5)
-
-        self.menu6 = pg.image.load("images/menu5.png")
-        fixedmenu6 = pg.transform.scale(self.menu6, (350, 100))
-        self.sprites2.append(fixedmenu6)
-
-        self.currentsprite2 = 0
-        self.image = self.sprites2[self.currentsprite2]
+        self.menu = [
+            pg.transform.scale(pg.image.load("images/menu3.png"), (350, 100)),
+            pg.transform.scale(pg.image.load("images/menu4.png"), (350, 100)),
+            pg.transform.scale(pg.image.load("images/menu5.png"), (350, 100)),
+            pg.transform.scale(pg.image.load("images/menu6.png"), (350, 100)),
+        ]
+        self.timer = Timer(self.menu)
 
         self.x = -100
         self.y = 350
         self.rect = pg.Rect(self.x, self.y, 350, 100)
-        # ------------------------------------------------------------
 
     def update(self):
-        self.currentsprite2 += 1
+        self.rect.x += 5
 
-        if self.currentsprite2 >= len(self.sprites2):
-            self.currentsprite2 = 0
-            self.rect.x += 15
-        self.image = self.sprites2[self.currentsprite2]
-
-
-class Launchscreen:
-    pacman = pg.image.load(f"images/Pac-Man-0.png")
-    title = pg.image.load("images/title.png")
-    bigPacman = pg.transform.scale(pacman, (150, 150))
-    bigtitle = pg.transform.scale(title, (653, 436))
-
-    # font = pg.font.Font('fonts/8-Bit Madness.ttf', 30)
-
-    x1 = 290
+    def draw(self):
+        self.timer.advance_frame_index()
+        image = self.timer.imagerect()
+        rect = image.get_rect()
+        rect.left, rect.top = self.rect.left, self.rect.top
+        self.screen.blit(image, rect)
 
 
 class IntroduceBlinky:
-
     pg.font.init()
 
     def __init__(self, game):
-
         self.surface = game.screen
-        self.smallblinky = pg.image.load(f"images/blinky0.png")
-        self.blinky = pg.transform.scale(self.smallblinky, (120, 120))
-
+        self.small_blinky = pg.image.load("images/blinky0.png")
+        self.blinky = pg.transform.scale(self.small_blinky, (120, 120))
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
-
-        self.blinkytext = self.font.render('"Blinky"', True, (255, 0, 0))
+        self.blinky_text = self.font.render('"Blinky"', True, (255, 0, 0))
 
     def draw(self):
         self.surface.blit(self.blinky, (265, 350))
-        self.surface.blit(self.blinkytext, (250, 500))
+        self.surface.blit(self.blinky_text, (250, 500))
 
 
 class IntroducePinky:
     pg.font.init()
 
     def __init__(self, game):
-
         self.surface = game.screen
-        self.smallPinky = pg.image.load(f"images/pinky0.png")
-        self.pinky = pg.transform.scale(self.smallPinky, (120, 120))
-
+        self.small_Pinky = pg.image.load("images/pinky0.png")
+        self.pinky = pg.transform.scale(self.small_Pinky, (120, 120))
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
-
-        self.pinkytext = self.font.render('"Pinky"', True, ("#FFB8FF"))
+        self.pinky_text = self.font.render('"Pinky"', True, ("#FFB8FF"))
 
     def draw(self):
         self.surface.blit(self.pinky, (265, 350))
-        self.surface.blit(self.pinkytext, (255, 500))
+        self.surface.blit(self.pinky_text, (255, 500))
 
 
 class IntroduceInky:
     pg.font.init()
 
     def __init__(self, game):
-
         self.surface = game.screen
-        self.smallinky = pg.image.load(f"images/inky0.png")
-        self.inky = pg.transform.scale(self.smallinky, (120, 120))
-
+        self.small_inky = pg.image.load("images/inky0.png")
+        self.inky = pg.transform.scale(self.small_inky, (120, 120))
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
-
-        self.inkytext = self.font.render('"Inky"', True, ("#00FFFF"))
+        self.inky_text = self.font.render('"Inky"', True, ("#00FFFF"))
 
     def draw(self):
         self.surface.blit(self.inky, (265, 350))
-        self.surface.blit(self.inkytext, (265, 500))
+        self.surface.blit(self.inky_text, (265, 500))
 
 
 class IntroduceClyde:
     pg.font.init()
 
     def __init__(self, game):
-
         self.surface = game.screen
-        self.smallClyde = pg.image.load(f"images/clyde0.png")
-        self.clyde = pg.transform.scale(self.smallClyde, (120, 120))
-
+        self.small_Clyde = pg.image.load("images/clyde0.png")
+        self.clyde = pg.transform.scale(self.small_Clyde, (120, 120))
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
-
-        self.clydetext = self.font.render('"Clyde"', True, ("#FFB852"))
+        self.clyde_text = self.font.render('"Clyde"', True, ("#FFB852"))
 
     def draw(self):
         self.surface.blit(self.clyde, (265, 350))
-        self.surface.blit(self.clydetext, (255, 500))
+        self.surface.blit(self.clyde_text, (255, 500))
 
 
 class Howhigh:
@@ -208,7 +142,7 @@ class Howhigh:
 
 
 class Launchscreen:
-    pacman = pg.image.load(f"images/Pac-Man-0.png")
+    pacman = pg.image.load("images/Pac-Man-0.png")
     title = pg.image.load("images/title.png")
     bigPacman = pg.transform.scale(pacman, (150, 150))
     bigtitle = pg.transform.scale(title, (653, 436))
@@ -223,21 +157,15 @@ class Launchscreen:
         self.screen = game.screen
         self.landing_page_finished = False
 
-        self.myanimation = Animation1(game=self)
-        self.myanimation2 = Animation2(game=self)
-        self.showblinky = IntroduceBlinky(game=self)
+        self.animation1 = Animation1(game=self)
+        self.animation2 = Animation2(game=self)
+        self.showBlinky = IntroduceBlinky(game=self)
         self.showInky = IntroduceInky(game=self)
         self.showPinky = IntroducePinky(game=self)
         self.showClyde = IntroduceClyde(game=self)
         self.howHigh = Howhigh(game=self)
 
-        self.mygroup = pg.sprite.Group(self.myanimation)
-        self.mygroup2 = pg.sprite.Group(self.myanimation2)
         self.clock = pg.time.Clock()
-        #
-
-        #
-        # self.animation_1 = Animation(500,200, game=self)
 
         self.mixer = mixer.init()
 
@@ -270,31 +198,19 @@ class Launchscreen:
             self.draw()
             self.check_events()  # exits game if QUIT pressed
 
-    def draw_text(self):
-        pass
-
-    def update(self):
-        pass
-        self.mygroup.update()
-        self.mygroup2.update()
-        self.showblinky.update()
-        self.showClyde.update()
-        self.showInky.update()
-        self.showPinky.update()
-
     def draw(self):
-        self.mygroup.update()
-        self.mygroup2.update()
+        self.animation1.update()
+        self.animation2.update()
         self.Surface.fill(BLACK)
         self.screen.blit(self.bigPacman, (self.x1, self.y1))
         self.screen.blit(self.bigtitle, (self.titlex, self.titley))
-        self.mygroup.draw(self.screen)
-        self.mygroup2.draw(self.screen)
+        self.animation1.draw()
+        self.animation2.draw()
 
         self.current_time = 0
         self.current_time = pg.time.get_ticks()
         if self.current_time >= 5500 and self.current_time <= 7500:
-            self.showblinky.draw()
+            self.showBlinky.draw()
         if self.current_time >= 7500 and self.current_time <= 9500:
             self.showPinky.draw()
         if self.current_time >= 9500 and self.current_time <= 11500:
@@ -314,7 +230,6 @@ class Launchscreen:
 
         self.current_time = pg.time.get_ticks()
 
-        self.draw_text()
         self.play_button.draw_button()
 
         pg.display.update()
