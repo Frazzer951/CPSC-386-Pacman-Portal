@@ -14,20 +14,25 @@ from sound import Sound
 
 class Game:
     def __init__(self):
+        pg.init()
         self.settings = Settings()
         size = self.settings.screen_width, self.settings.screen_height  # tuple
         self.screen = pg.display.set_mode(size=size)
 
         # self.sound = Sound(bg_music="sounds/launch.mp3")
-        # self.scoreboard = Scoreboard(game=self)
+        self.scoreboard = Scoreboard(game=self)
 
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
-        self.ghost = Ghosts(game=self)
+        self.ghosts = Ghosts(game=self)
+
         self.gameover = False
 
     def reset(self):
         print("Resetting game...")
+        self.pacman.reset()
+        self.ghosts.reset()
+        self.gameboard.reset()
 
     def game_over(self):
         print("All Lives gone, GAME OVER!")
@@ -44,18 +49,16 @@ class Game:
     def play(self):
         # self.sound.play_bg()
         frametime = 1 / 60
-        self.finished = False
-        while not self.finished:
-            if self.gameover:
-                break
-
+        self.timer = time()
+        while not self.gameover:
             start_time = time()
             gf.check_events(game=self)
             self.screen.fill(self.settings.bg_color)
 
             self.gameboard.draw()
             self.pacman.update()
-            self.ghost.update()
+            self.ghosts.update()
+            self.scoreboard.update()
 
             pg.display.flip()
             elapsed = time() - start_time

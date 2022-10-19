@@ -10,23 +10,19 @@ class Pacman(Character):
         self.game = game
         self.lives = 4
         self.pos = game.settings.pacman_start
+        self.start_pos = self.pos
+        self.target_pos = game.settings.pacman_start
         # self.image = pg.image.load('images/pacman.bmp')
         # self.rect = self.image.get_rect()
 
         self.next_dir = Direction.NONE
 
-    def check_collision(self):
-        # if small dot
-        # if big dot
-        # if fruit
-        # if ghost (not scared)
-        # if ghost (scared)
-        pass
-
     def die(self):
         pass
 
     def update(self):
+        if not self.isMoving:
+            self.gameboard.pacman_collision_check(self.pos)
         self.move()
         self.draw()
 

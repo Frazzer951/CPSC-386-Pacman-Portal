@@ -19,13 +19,18 @@ def check_keydown_events(event, game):
 
 
 def check_keyup_events(event):
-    key = event.key
+    pass  # key = event.key
 
 
 def check_events(game):
     for event in pg.event.get():
         if event.type == pg.QUIT:
             sys.exit()
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                game.gameboard.set_portal(game.pacman.start_pos, 1)
+            elif event.button == 3:
+                game.gameboard.set_portal(game.pacman.start_pos, 2)
         elif event.type == pg.KEYDOWN:
             check_keydown_events(event=event, game=game)
         elif event.type == pg.KEYUP:
