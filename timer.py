@@ -70,11 +70,11 @@ class Timer:
 
 
 class TimerDict:
-    def __init__(self, dict_frames, first_key, wait=100, looponce=False):
+    def __init__(self, dict_frames, first_key, wait=300, looponce=False):
         self.dict_frames = dict_frames
         self.dict_timers = {}
         for k, v in self.dict_frames.items():
-            self.dict_timers[k] = Timer(v)
+            self.dict_timers[k] = Timer(frames=v, wait=wait)
         self.timer = self.dict_timers[first_key]
         self.key = first_key
 
