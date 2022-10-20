@@ -1,0 +1,76 @@
+{"frames": {
+    "Cherry.png":
+	{
+		"frame": {"x":0,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Strawberry.png":
+	{
+		"frame": {"x":32,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Orange.png":
+	{
+		"frame": {"x":64,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Apple.png":
+	{
+		"frame": {"x":96,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Melon.png":
+	{
+		"frame": {"x":0,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Galaxian_Flagship.png":
+	{
+		"frame": {"x":32,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Bell.png":
+	{
+		"frame": {"x":64,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Key.png":
+	{
+		"frame": {"x":96,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	}
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "pacman_spritesheet.png",
+	"format": "RGBA8888",
+	"size": {"w":224,"h":224},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:f4646ccd420cec8c901759d3c5b7fc72:66ee9ab05c9e17667b00533febb92420:647e032122581cff100b5f3e740d1de5$"
+}
+}
