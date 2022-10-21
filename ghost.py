@@ -42,6 +42,10 @@ class Ghosts:
         self.ghosts.append(Pinky(self.game, pinky_images, scared_images, eye_images))
         self.ghosts.append(Clyde(self.game, clyde_images, scared_images, eye_images))
 
+    def reset(self):
+        for ghost in self.ghosts:
+            ghost.reset()
+
     def switch_mode(self):
         for ghost in self.ghosts:
             ghost.switch = True
@@ -127,11 +131,8 @@ class Ghost(Character):
         self.just_scared = False
         self.flashing = False
         self.eaten = False
-        self.color = (0, 0, 0)
         self.screen = game.screen
         self.timer_dict = {}
-
-        self.temp = 0
 
     def scared_move(self):
         if not self.isMoving:
@@ -292,7 +293,6 @@ class Ghost(Character):
 
     def draw(self):
         pos = gf.world_to_screen(self.pos)
-        # pg.draw.circle(self.screen, self.color, pos, 10)
         self.timer_dict.advance_frame_index()
         self.image = self.timer_dict.imagerect()
         self.rect = self.image.get_rect()
@@ -304,7 +304,6 @@ class Blinky(Ghost):
     def __init__(self, game, images, scared_images, eye_images):
         super().__init__(game=game)
         self.pos = game.settings.blinky_start
-        self.color = (255, 0, 0)
 
         self.movement_images = images
         self.scared_images = scared_images
@@ -326,6 +325,16 @@ class Blinky(Ghost):
         }
 
         self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
+
+    def reset(self):
+        super().reset()
+        self.pos = self.game.settings.blinky_start
+        self.chase = False
+        self.switch = False
+        self.scared = False
+        self.just_scared = False
+        self.flashing = False
+        self.eaten = False
 
     def move_to(self):
         if not self.isMoving:
@@ -426,7 +435,6 @@ class Inky(Ghost):
     def __init__(self, game, images, scared_images, eye_images, blinky):
         super().__init__(game=game)
         self.pos = game.settings.inky_start
-        self.color = (0, 255, 0)
         self.blinky_pos = blinky
 
         self.movement_images = images
@@ -449,6 +457,16 @@ class Inky(Ghost):
         }
 
         self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
+
+    def reset(self):
+        super().reset()
+        self.pos = self.game.settings.inky_start
+        self.chase = False
+        self.switch = False
+        self.scared = False
+        self.just_scared = False
+        self.flashing = False
+        self.eaten = False
 
     def move_to(self):
         if not self.isMoving:
@@ -560,7 +578,6 @@ class Pinky(Ghost):
     def __init__(self, game, images, scared_images, eye_images):
         super().__init__(game=game)
         self.pos = game.settings.pinky_start
-        self.color = (0, 0, 255)
 
         self.movement_images = images
         self.scared_images = scared_images
@@ -582,6 +599,16 @@ class Pinky(Ghost):
         }
 
         self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
+
+    def reset(self):
+        super().reset()
+        self.pos = self.game.settings.pinky_start
+        self.chase = False
+        self.switch = False
+        self.scared = False
+        self.just_scared = False
+        self.flashing = False
+        self.eaten = False
 
     def move_to(self):
         if not self.isMoving:
@@ -691,7 +718,6 @@ class Clyde(Ghost):
     def __init__(self, game, images, scared_images, eye_images):
         super().__init__(game=game)
         self.pos = game.settings.clyde_start
-        self.color = (255, 255, 255)
 
         self.movement_images = images
         self.scared_images = scared_images
@@ -713,6 +739,16 @@ class Clyde(Ghost):
         }
 
         self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
+
+    def reset(self):
+        super().reset()
+        self.pos = self.game.settings.clyde_start
+        self.chase = False
+        self.switch = False
+        self.scared = False
+        self.just_scared = False
+        self.flashing = False
+        self.eaten = False
 
     def move_to(self):
         if not self.isMoving:

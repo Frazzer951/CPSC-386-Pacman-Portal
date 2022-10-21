@@ -95,6 +95,14 @@ class Gameboard:
         self.graph.connect_pos(Vector(25, 13), Vector(26, 13))
         self.graph.connect_pos(Vector(-1, 13), Vector(26, 13))
 
+    def reset(self):
+        self.graph = Graph()
+        self.portal_1_placed = False
+        self.portal_1_pos = Vector()
+        self.portal_2_placed = False
+        self.portal_2_pos = Vector()
+        self.create_board()
+
     def is_valid_pos(self, pos):
         return self.graph.is_node_at(pos)
 

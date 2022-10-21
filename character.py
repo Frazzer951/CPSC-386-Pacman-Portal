@@ -44,11 +44,22 @@ class Character(Sprite):
         self.move_vec = Vector()
 
         self.isMoving = False
-        self.move_steps = 1 / self.move_speed
         self.move_step = 0
 
         self.timer = Timer(frames=[pg.image.load("images/placeholder_32.png")])
         self.rect = self.timer.imagerect().get_rect()
+
+    def reset(self):
+        self.dir = Direction.NONE
+        self.next_dir = Direction.NONE
+
+        self.pos = Vector()
+        self.start_pos = Vector()
+        self.target_pos = Vector()
+        self.move_vec = Vector()
+
+        self.isMoving = False
+        self.move_step = 0
 
     def move(self):
         if self.isMoving:
@@ -62,6 +73,7 @@ class Character(Sprite):
                 self.pos += self.move_vec * self.move_speed
                 self.move_step += 1
         else:
+            self.move_steps = 1 / self.move_speed
             self.dir = self.next_dir
             if self.dir == Direction.NONE:
                 return  # If the move direction is NONE, then return
