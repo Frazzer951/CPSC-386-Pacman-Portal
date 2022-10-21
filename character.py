@@ -47,7 +47,7 @@ class Character(Sprite):
         self.move_steps = 1 / self.move_speed
         self.move_step = 0
 
-        self.timer = Timer(frames=[pg.image.load("images/pac_placeholder.png")])
+        self.timer = Timer(frames=[pg.image.load("images/placeholder_32.png")])
         self.rect = self.timer.imagerect().get_rect()
 
     def move(self):

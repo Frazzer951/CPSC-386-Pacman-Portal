@@ -5,8 +5,8 @@ from pygame import mixer
 from pygame.sprite import Sprite
 
 from button import Button
-from timer import Timer
 from spritesheet import SpriteSheet
+from timer import Timer
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -34,13 +34,13 @@ class Animation1(Sprite):
         self.clyde_x = 850
         self.y = 450
 
-        #self.rect = pg.Rect(self.x, self.y, 350, 100)
+        # self.rect = pg.Rect(self.x, self.y, 350, 100)
 
         blinky_images = [ghost_images[0], ghost_images[1]]
         pinky_images = [ghost_images[2], ghost_images[3]]
         inky_images = [ghost_images[4], ghost_images[5]]
         clyde_images = [ghost_images[6], ghost_images[7]]
-        
+
         self.timer_pacman = Timer(frames=pacman_images, wait=100)
         self.timer_blinky = Timer(frames=blinky_images, wait=200)
         self.timer_pinky = Timer(frames=pinky_images, wait=200)
@@ -60,35 +60,35 @@ class Animation1(Sprite):
         # rect = image.get_rect()
         # rect.left, rect.top = self.rect.left, self.rect.top
         # self.screen.blit(image, rect)
-        
+
         self.timer_pacman.advance_frame_index()
         image = self.timer_pacman.imagerect()
         image = pg.transform.scale(image, (150, 150))
         rect = image.get_rect()
         rect.left, rect.top = self.pacman_x, self.y
         self.screen.blit(image, rect)
-        
+
         self.timer_blinky.advance_frame_index()
         image = self.timer_blinky.imagerect()
         image = pg.transform.scale(image, (150, 150))
         rect = image.get_rect()
         rect.left, rect.top = self.blinky_x, self.y
         self.screen.blit(image, rect)
-        
+
         self.timer_pinky.advance_frame_index()
         image = self.timer_pinky.imagerect()
         image = pg.transform.scale(image, (150, 150))
         rect = image.get_rect()
         rect.left, rect.top = self.pinky_x, self.y
         self.screen.blit(image, rect)
-        
+
         self.timer_inky.advance_frame_index()
         image = self.timer_inky.imagerect()
         image = pg.transform.scale(image, (150, 150))
         rect = image.get_rect()
         rect.left, rect.top = self.inky_x, self.y
         self.screen.blit(image, rect)
-        
+
         self.timer_clyde.advance_frame_index()
         image = self.timer_clyde.imagerect()
         image = pg.transform.scale(image, (150, 150))
@@ -117,8 +117,8 @@ class Animation2(Sprite):
         self.ghost3_x = -50
         self.ghost4_x = 50
         self.y = 290
-        #self.rect = pg.Rect(self.x, self.y, 350, 100)
-        
+        # self.rect = pg.Rect(self.x, self.y, 350, 100)
+
         self.timer_pacman = Timer(frames=pacman_images, wait=100)
         self.timer_ghost = Timer(frames=ghost_images, wait=200)
 
@@ -135,27 +135,27 @@ class Animation2(Sprite):
         # rect = image.get_rect()
         # rect.left, rect.top = self.rect.left, self.rect.top
         # self.screen.blit(image, rect)
-        
+
         self.timer_pacman.advance_frame_index()
         image = self.timer_pacman.imagerect()
         image = pg.transform.scale(image, (150, 150))
         rect = image.get_rect()
         rect.left, rect.top = self.pacman_x, self.y
         self.screen.blit(image, rect)
-        
+
         self.timer_ghost.advance_frame_index()
         image = self.timer_ghost.imagerect()
         image = pg.transform.scale(image, (150, 150))
         rect = image.get_rect()
         rect.left, rect.top = self.ghost1_x, self.y
         self.screen.blit(image, rect)
-        
+
         rect.left, rect.top = self.ghost2_x, self.y
         self.screen.blit(image, rect)
-        
+
         rect.left, rect.top = self.ghost3_x, self.y
         self.screen.blit(image, rect)
-        
+
         rect.left, rect.top = self.ghost4_x, self.y
         self.screen.blit(image, rect)
 
@@ -165,8 +165,8 @@ class IntroduceBlinky:
 
     def __init__(self, game, images):
         self.surface = game.screen
-        #self.small_blinky = pg.image.load("images/blinky0.png")
-        #self.blinky = pg.transform.scale(self.small_blinky, (120, 120))
+        # self.small_blinky = pg.image.load("images/blinky0.png")
+        # self.blinky = pg.transform.scale(self.small_blinky, (120, 120))
         self.blinky = [images[0], images[1]]
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
         self.blinky_text = self.font.render('"Blinky"', True, (255, 0, 0))
@@ -182,7 +182,7 @@ class IntroduceBlinky:
         text_rect = self.blinky_text.get_rect()
         text_rect.center = 325, 520
         self.surface.blit(image, rect)
-        self.surface.blit(self.blinky_text, text_rect) # (250, 500)
+        self.surface.blit(self.blinky_text, text_rect)  # (250, 500)
 
 
 class IntroducePinky:
@@ -190,8 +190,8 @@ class IntroducePinky:
 
     def __init__(self, game, images):
         self.surface = game.screen
-        #self.small_Pinky = pg.image.load("images/pinky0.png")
-        #self.pinky = pg.transform.scale(self.small_Pinky, (120, 120))
+        # self.small_Pinky = pg.image.load("images/pinky0.png")
+        # self.pinky = pg.transform.scale(self.small_Pinky, (120, 120))
         self.pinky = [images[0], images[1]]
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
         self.pinky_text = self.font.render('"Pinky"', True, ("#FFB8FF"))
@@ -215,8 +215,8 @@ class IntroduceInky:
 
     def __init__(self, game, images):
         self.surface = game.screen
-        #self.small_inky = pg.image.load("images/inky0.png")
-        #self.inky = pg.transform.scale(self.small_inky, (120, 120))
+        # self.small_inky = pg.image.load("images/inky0.png")
+        # self.inky = pg.transform.scale(self.small_inky, (120, 120))
         self.inky = [images[0], images[1]]
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
         self.inky_text = self.font.render('"Inky"', True, ("#00FFFF"))
@@ -240,8 +240,8 @@ class IntroduceClyde:
 
     def __init__(self, game, images):
         self.surface = game.screen
-        #self.small_Clyde = pg.image.load("images/clyde0.png")
-        #self.clyde = pg.transform.scale(self.small_Clyde, (120, 120))
+        # self.small_Clyde = pg.image.load("images/clyde0.png")
+        # self.clyde = pg.transform.scale(self.small_Clyde, (120, 120))
         self.clyde = [images[0], images[1]]
         self.font = pg.font.Font("fonts/crackman.ttf", 32)
         self.clyde_text = self.font.render('"Clyde"', True, ("#FFB852"))
@@ -289,32 +289,36 @@ class Launchscreen:
         self.landing_page_finished = False
 
         pacman_sprites = SpriteSheet("images/pacman.png", "pacman_spritesheet.json")
-        pacman_images1 = [pacman_sprites.get_sprite("Pacman_Circle.png"),
+        pacman_images1 = [
+            pacman_sprites.get_sprite("Pacman_Circle.png"),
             pacman_sprites.get_sprite("Pacman_Left1.png"),
             pacman_sprites.get_sprite("Pacman_Left2.png"),
-            pacman_sprites.get_sprite("Pacman_Left1.png")
+            pacman_sprites.get_sprite("Pacman_Left1.png"),
         ]
-        pacman_images2 = [pacman_sprites.get_sprite("Pacman_Circle.png"),
+        pacman_images2 = [
+            pacman_sprites.get_sprite("Pacman_Circle.png"),
             pacman_sprites.get_sprite("Pacman_Right1.png"),
             pacman_sprites.get_sprite("Pacman_Right2.png"),
-            pacman_sprites.get_sprite("Pacman_Right1.png")
-         ]
-        
+            pacman_sprites.get_sprite("Pacman_Right1.png"),
+        ]
+
         ghost_sprites = SpriteSheet("images/ghosts.png", "ghosts_spritesheet.json")
         blinky_images = [ghost_sprites.get_sprite(f"Blinky_{n}.png") for n in range(1, 11)]
         inky_images = [ghost_sprites.get_sprite(f"Inky_{n}.png") for n in range(1, 11)]
         pinky_images = [ghost_sprites.get_sprite(f"Pinky_{n}.png") for n in range(1, 11)]
         clyde_images = [ghost_sprites.get_sprite(f"Clyde_{n}.png") for n in range(1, 11)]
-        scared_images = [
-            ghost_sprites.get_sprite("Running_1.png"),
-            ghost_sprites.get_sprite("Running_2.png")
+        scared_images = [ghost_sprites.get_sprite("Running_1.png"), ghost_sprites.get_sprite("Running_2.png")]
+
+        ghost_images = [
+            blinky_images[6],
+            blinky_images[7],
+            pinky_images[6],
+            pinky_images[7],
+            inky_images[6],
+            inky_images[7],
+            clyde_images[6],
+            clyde_images[7],
         ]
-        
-        ghost_images = [blinky_images[6], blinky_images[7],
-                        pinky_images[6], pinky_images[7],
-                        inky_images[6], inky_images[7], 
-                        clyde_images[6], clyde_images[7] 
-                    ]
 
         self.animation1 = Animation1(game=self, pacman_images=pacman_images1, ghost_images=ghost_images)
         self.animation2 = Animation2(game=self, pacman_images=pacman_images2, ghost_images=scared_images)
@@ -338,7 +342,6 @@ class Launchscreen:
         self.play_button = Button(self.screen, "Start Game")
         self.play_button.rect.top += 230
         self.play_button.prep_msg("Play Game")
-
 
     def check_events(self):
         for e in pg.event.get():

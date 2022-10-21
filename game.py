@@ -24,14 +24,16 @@ class Game:
         self.scoreboard = Scoreboard(game=self)
 
         fruits = SpriteSheet("images/fruits.png", "fruits_spritesheet.json")
-        self.fruits = [fruits.get_sprite("Cherry.png"),
-                       fruits.get_sprite("Strawberry.png"),
-                       fruits.get_sprite("Orange.png"),
-                       fruits.get_sprite("Apple.png"),
-                       fruits.get_sprite("Melon.png"),
-                       fruits.get_sprite("Galaxian_Flagship.png"),
-                       fruits.get_sprite("Bell.png"),
-                       fruits.get_sprite("Key.png")]
+        self.fruits = [
+            fruits.get_sprite("Cherry.png"),
+            fruits.get_sprite("Strawberry.png"),
+            fruits.get_sprite("Orange.png"),
+            fruits.get_sprite("Apple.png"),
+            fruits.get_sprite("Melon.png"),
+            fruits.get_sprite("Galaxian_Flagship.png"),
+            fruits.get_sprite("Bell.png"),
+            fruits.get_sprite("Key.png"),
+        ]
 
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
@@ -79,8 +81,8 @@ class Game:
 
 def main():
     g = Game()
-    #ls = Launchscreen(game=g)
-    #ls.show()
+    ls = Launchscreen(game=g)
+    ls.show()
     g.play()
 
 

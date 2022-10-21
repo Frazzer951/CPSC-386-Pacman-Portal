@@ -1,12 +1,13 @@
 from random import randint
 from time import time
 
+import pygame as pg
+
 import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet
 from timer import TimerDict
 from vector import Vector
-import pygame as pg
 
 
 class Ghosts:
@@ -91,15 +92,14 @@ class Ghosts:
             if ghost.scared:
                 ghost.scared_move()
                 if pg.sprite.collide_rect(ghost, self.game.pacman):
-                    print('Ghost eaten')
+                    print("Ghost eaten")
                     ghost.eaten = True
             else:
                 ghost.move_to()
                 ghost.eaten = False
                 if pg.sprite.collide_rect(ghost, self.game.pacman):
                     self.game.pacman.lives -= 1
-                    print('Pacman got no scoped')
-            
+                    print("Pacman got no scoped")
 
 
 class Ghost(Character):
