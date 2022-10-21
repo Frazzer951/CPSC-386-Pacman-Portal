@@ -56,15 +56,11 @@ class Pacman(Character):
     def init_speed(self):
         round = self.game.round_number
         if round == 0:
-            print("80% move speed")
             self.move_speed = self.game.settings.base_speed * 0.8
         elif round < 4:
-            print("80% move speed")
             self.move_speed = self.game.settings.base_speed * 0.9
         else:
-            print("80% move speed")
             self.move_speed = self.game.settings.base_speed * 1.0
-        print(f"Move speed: {self.move_speed}")
 
     def reset(self):
         super().reset()
