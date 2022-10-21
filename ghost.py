@@ -63,13 +63,11 @@ class Ghosts:
             ghost.scare()
 
     def check_collision(self):
-        pac_pos = gf.world_to_screen(self.game.pacman.pos)
-        pac_rect = self.game.pacman.rect
-        pac_rect.center = pac_pos[0], pac_pos[1]
-
         for ghost in self.ghosts:
             if not ghost.eaten:
-                if ghost.rect.colliderect(pac_rect):
+                dist = ghost.pos - self.game.pacman.pos
+                dist = dist.magnitude()
+                if dist < 2:
                     if ghost.scared:
                         ghost.eat()
                     else:
