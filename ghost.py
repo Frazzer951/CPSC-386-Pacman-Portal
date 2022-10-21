@@ -18,6 +18,7 @@ class Ghosts:
         self.timer = 0.0
         self.timer_index = 0
         self.scared_mode = False
+        self.kills = 0
 
         self.ghost_images = SpriteSheet("images/ghosts.png", "ghosts_spritesheet.json")
         blinky_images = [self.ghost_images.get_sprite(f"Blinky_{n}.png") for n in range(1, 11)]
@@ -38,6 +39,7 @@ class Ghosts:
         self.ghosts.append(Clyde(self.game, clyde_images, scared_images, eye_images))
 
     def reset(self):
+        self.kills = 0
         self.timer = 0.0
         self.timer_index = 0
         for ghost in self.ghosts:
@@ -70,6 +72,9 @@ class Ghosts:
                 if dist < 2:
                     if ghost.scared:
                         ghost.eat()
+                        self.kills += 1
+                        points = (2**self.kills) * 100
+                        self.game.scoreboard.increment_score(points)
                     else:
                         self.game.pacman.die()
 
@@ -81,6 +86,7 @@ class Ghosts:
 
         if self.scared_mode is True:
             self.scared_mode = False
+            self.kills = 0
             self.scare()
 
         self.check_collision()
