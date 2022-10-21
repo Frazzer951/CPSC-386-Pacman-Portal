@@ -20,10 +20,12 @@ class Gameboard:
         self.portal_2_placed = False
         self.portal_2_pos = Vector()
 
+        self.fruit_spawned = False
+
         self.create_board()
 
     def create_board(self):
-        gameboard_string = [  # 0 = ignore, 1 = node, 2 = point orb, 3 = power up, 4 = fruit
+        gameboard_string = [  # 0 = ignore, 1 = node, 2 = point orb, 3 = power up
             "22222222222200222222222222",  # 0
             "20000200000200200000200002",
             "30000200000200200000200003",
@@ -59,7 +61,6 @@ class Gameboard:
             "1": NodeType.NONE,
             "2": NodeType.POINT,
             "3": NodeType.POWER_UP,
-            "4": NodeType.FRUIT,
         }
 
         def neighbor_node(from_pos: Vector, to_pos: Vector):
@@ -67,13 +68,13 @@ class Gameboard:
                 return
 
             val = gameboard_string[int(to_pos.y)][int(to_pos.x)]
-            if val in ["1", "2", "3", "4"]:
+            if val in ["1", "2", "3"]:
                 self.graph.add_node(to_pos)
                 self.graph.connect_pos(from_pos, to_pos)
 
         for j, col in enumerate(gameboard_string):
             for i, val in enumerate(col):
-                if val in ["1", "2", "3", "4"]:
+                if val in ["1", "2", "3"]:
                     self.graph.add_node(Vector(i, j))
                     neighbor_node(Vector(i, j), Vector(i - 1, j))
                     neighbor_node(Vector(i, j), Vector(i + 1, j))
@@ -82,13 +83,15 @@ class Gameboard:
                 else:
                     continue
 
+        self.initial_point_orbs = 0
         for j, col in enumerate(gameboard_string):
             for i, val in enumerate(col):
-                if val in ["1", "2", "3", "4"]:
+                if val in ["1", "2", "3"]:
                     type = num_to_type[val]
                     if type != NodeType.NONE:
-                        node = self.graph.get_node_at(Vector(i, j))
-                        node.type = type
+                        self.initial_point_orbs += 1
+                        self.graph.set_node_at(Vector(i, j), type)
+        print(f"Total orbs = {self.initial_point_orbs}")
 
         # "Warp Gate" Nodes
         self.graph.connect_pos(Vector(0, 13), Vector(-1, 13))
@@ -101,6 +104,7 @@ class Gameboard:
         self.portal_1_pos = Vector()
         self.portal_2_placed = False
         self.portal_2_pos = Vector()
+        self.fruit_spawned = False
         self.create_board()
 
     def is_valid_pos(self, pos):
@@ -162,6 +166,21 @@ class Gameboard:
                 self.game.pacman.pos = self.portal_1_pos
                 self.clear_portals()
 
+    def count_orbs(self):
+        count = 0
+        for node in self.graph.nodes:
+            if node.type in [NodeType.POINT, NodeType.POWER_UP]:
+                count += 1
+        return count
+
+    def update(self):
+        if not self.fruit_spawned:
+            count = self.count_orbs()
+            if count / self.initial_point_orbs < 0.5:
+                self.fruit_spawned = True
+                self.graph.set_node_at(Vector(12, 16), NodeType.FRUIT)
+        self.draw()
+
     def draw(self):
         self.screen.blit(self.image, self.rect)
 
@@ -173,4 +192,4 @@ class Gameboard:
 
         # Draw all nodes
         for node in self.graph.nodes:
-            node.draw(self.screen)
+            node.draw(self.game)

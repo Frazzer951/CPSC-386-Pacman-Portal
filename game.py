@@ -23,6 +23,7 @@ class Game:
         # self.sound = Sound(bg_music="sounds/launch.mp3")
         self.scoreboard = Scoreboard(game=self)
 
+        self.round_number = 0
         fruits = SpriteSheet("images/fruits.png", "fruits_spritesheet.json")
         self.fruits = [
             fruits.get_sprite("Cherry.png"),
@@ -38,7 +39,6 @@ class Game:
         self.gameboard = Gameboard(game=self)
         self.pacman = Pacman(game=self)
         self.ghosts = Ghosts(game=self)
-
         self.gameover = False
 
     def reset(self):
@@ -68,7 +68,7 @@ class Game:
             gf.check_events(game=self)
             self.screen.fill(self.settings.bg_color)
 
-            self.gameboard.draw()
+            self.gameboard.update()
             self.pacman.update()
             if not self.pacman.dying:  # dont draw ghosts if pacman is dying
                 self.ghosts.update()
