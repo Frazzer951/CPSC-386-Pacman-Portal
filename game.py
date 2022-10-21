@@ -70,7 +70,8 @@ class Game:
 
             self.gameboard.draw()
             self.pacman.update()
-            self.ghosts.update()
+            if not self.pacman.dying:  # dont draw ghosts if pacman is dying
+                self.ghosts.update()
             self.scoreboard.update()
 
             pg.display.flip()
