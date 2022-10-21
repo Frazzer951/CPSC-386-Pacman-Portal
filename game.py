@@ -68,8 +68,8 @@ class Game:
 
 def main():
     g = Game()
-    ls = Launchscreen(game=g)
-    ls.show()
+    #ls = Launchscreen(game=g)
+    #ls.show()
     g.play()
 
 

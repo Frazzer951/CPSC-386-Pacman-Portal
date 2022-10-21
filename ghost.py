@@ -6,6 +6,7 @@ from character import Character, Direction
 from spritesheet import SpriteSheet
 from timer import TimerDict
 from vector import Vector
+import pygame as pg
 
 
 class Ghosts:
@@ -75,11 +76,19 @@ class Ghosts:
             self.unscare()
 
         for ghost in self.ghosts:
+            ghost.update()
             if ghost.scared:
                 ghost.scared_move()
+                if pg.sprite.collide_rect(ghost, self.game.pacman):
+                    print('Ghost eaten')
+                    ghost.eaten = True
             else:
                 ghost.move_to()
-            ghost.update()
+                ghost.eaten = False
+                if pg.sprite.collide_rect(ghost, self.game.pacman):
+                    self.game.pacman.lives -= 1
+                    print('Pacman got no scoped')
+            
 
 
 class Ghost(Character):
@@ -101,11 +110,14 @@ class Ghost(Character):
         self.color = (0, 0, 0)
         self.screen = game.screen
         self.timer_dict = {}
+        self.rect = None
+        self.image = None
+        self.pos = None
 
         self.temp = 0
 
     def scared_move(self):
-        if not self.isMoving:
+        if self.isMoving:
             if self.eaten:  # To be implemented
                 pos = self.pos
                 target_pos = Vector(13, 13)
@@ -263,10 +275,10 @@ class Ghost(Character):
         pos = gf.world_to_screen(self.pos)
         # pg.draw.circle(self.screen, self.color, pos, 10)
         self.timer_dict.advance_frame_index()
-        image = self.timer_dict.imagerect()
-        rect = image.get_rect()
-        rect.center = pos[0], pos[1]
-        self.screen.blit(image, rect)
+        self.image = self.timer_dict.imagerect()
+        self.rect = self.image.get_rect()
+        self.rect.center = pos[0], pos[1]
+        self.screen.blit(self.image, self.rect)
 
 
 class Blinky(Ghost):

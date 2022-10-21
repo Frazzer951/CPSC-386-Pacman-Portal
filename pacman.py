@@ -12,8 +12,8 @@ class Pacman(Character):
         self.pos = game.settings.pacman_start
         self.start_pos = self.pos
         self.target_pos = game.settings.pacman_start
-        # self.image = pg.image.load('images/pacman.bmp')
-        # self.rect = self.image.get_rect()
+        self.image = pg.image.load('images/placeholder_32.png')
+        self.rect = self.image.get_rect()
 
         self.next_dir = Direction.NONE
 
@@ -28,6 +28,6 @@ class Pacman(Character):
 
     def draw(self):
         pos = gf.world_to_screen(self.pos)
-        pg.draw.circle(self.screen, (255, 255, 0), pos, 10)
-        # image = self.timer.image()
-        # self.screen.blit(image, self.rect)
+        # pg.draw.circle(self.screen, self.color, pos, 10
+        self.rect.center = pos[0], pos[1]
+        self.screen.blit(self.image, self.rect)
