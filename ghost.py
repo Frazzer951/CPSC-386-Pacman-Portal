@@ -17,12 +17,7 @@ class Ghosts:
         self.times = [7.0, 20.0, 7.0, 20.0, 5.0, 20.0, 5.0]
         self.timer = 0.0
         self.timer_index = 0
-
-        self.scared_time = 10.0
-        self.flash_time = 8.0
-        self.scared_timer = 0.0
         self.scared_mode = False
-        self.flashing_mode = False
 
         self.ghost_images = SpriteSheet("images/ghosts.png", "ghosts_spritesheet.json")
         blinky_images = [self.ghost_images.get_sprite(f"Blinky_{n}.png") for n in range(1, 11)]
@@ -43,6 +38,8 @@ class Ghosts:
         self.ghosts.append(Clyde(self.game, clyde_images, scared_images, eye_images))
 
     def reset(self):
+        self.timer = 0.0
+        self.timer_index = 0
         for ghost in self.ghosts:
             ghost.reset()
 
@@ -61,18 +58,9 @@ class Ghosts:
             else:
                 ghost.next_dir = Direction.NONE
 
-    def unscare(self):
-        for ghost in self.ghosts:
-            ghost.scared = False
-            ghost.flashing = False
-
     def scare(self):
         for ghost in self.ghosts:
-            ghost.scared = True
-
-    def flash(self):
-        for ghost in self.ghosts:
-            ghost.flashing = True
+            ghost.scare()
 
     def check_collision(self):
         pac_pos = gf.world_to_screen(self.game.pacman.pos)
@@ -82,8 +70,7 @@ class Ghosts:
         for ghost in self.ghosts:
             if ghost.rect.colliderect(pac_rect):
                 if ghost.scared:
-                    print("Ghost eaten")
-                    ghost.eaten = True
+                    ghost.eat()
                 else:
                     self.game.pacman.die()
 
@@ -94,23 +81,12 @@ class Ghosts:
             self.timer = time()
 
         if self.scared_mode is True:
-            self.scared_timer = time()
             self.scared_mode = False
-            self.flashing_mode = True
             self.scare()
-        elif time() - self.scared_timer > self.scared_time:
-            self.unscare()
-        elif time() - self.scared_timer > self.flash_time and self.flashing_mode is True:
-            self.flashing_mode = False
-            self.flash()
 
         self.check_collision()
 
         for ghost in self.ghosts:
-            if ghost.scared:
-                ghost.scared_move()
-            else:
-                ghost.move_to()
             ghost.update()
 
 
@@ -134,139 +110,161 @@ class Ghost(Character):
         self.screen = game.screen
         self.timer_dict = {}
 
+        self.scared_time = 10.0
+        self.flash_time = 8.0
+        self.scared_timer = 0.0
+        self.flashing_mode = False
+
+    def eaten_move(self):
+        pos = self.pos
+        target_pos = Vector(13, 13)
+        if pos == target_pos:
+            self.eaten = False
+        else:
+            dists = []
+
+            if self.dir == Direction.UP:
+                back_dir = Direction.DOWN
+            elif self.dir == Direction.LEFT:
+                back_dir = Direction.RIGHT
+            elif self.dir == Direction.DOWN:
+                back_dir = Direction.UP
+            elif self.dir == Direction.RIGHT:
+                back_dir = Direction.LEFT
+            else:
+                back_dir = Direction.NONE
+
+            # UP
+            up_pos = Vector(pos.x, pos.y - 1)
+            dist = (target_pos.x - up_pos.x) ** 2 + (target_pos.y - up_pos.y) ** 2
+            dists.append((dist, up_pos, Direction.UP))
+            # LEFT
+            left_pos = Vector(pos.x - 1, pos.y)
+            dist = (target_pos.x - left_pos.x) ** 2 + (target_pos.y - left_pos.y) ** 2
+            dists.append((dist, left_pos, Direction.LEFT))
+            # DOWN
+            down_pos = Vector(pos.x, pos.y + 1)
+            dist = (target_pos.x - down_pos.x) ** 2 + (target_pos.y - down_pos.y) ** 2
+            dists.append((dist, down_pos, Direction.DOWN))
+            # RIGHT
+            right_pos = Vector(pos.x + 1, pos.y)
+            dist = (target_pos.x - right_pos.x) ** 2 + (target_pos.y - right_pos.y) ** 2
+            dists.append((dist, right_pos, Direction.RIGHT))
+
+            dists = sorted(dists, key=lambda x: x[0])
+            for i in range(1, len(dists)):
+                if i > 0 and dists[i][0] == dists[i - 1][0]:
+                    if dists[i][2] is Direction.UP:
+                        dists[i], dists[i - 1] = dists[i - 1], dists[i]
+                    elif dists[i][2] is Direction.LEFT and dists[i - 1][2] is not Direction.UP:
+                        dists[i], dists[i - 1] = dists[i - 1], dists[i]
+                    elif (
+                        dists[i][2] is Direction.DOWN
+                        and dists[i - 1][2] is not Direction.UP
+                        and dists[i - 1][2] is not Direction.LEFT
+                    ):
+                        dists[i], dists[i - 1] = dists[i - 1], dists[i]
+                    i -= 1
+
+            for dir in dists:
+                node = self.graph.get_node_at(up_pos)
+                if (
+                    node is not None
+                    and dir[1] == node.pos
+                    and dir[2] is not back_dir
+                    and up_pos != Vector(11, 9)
+                    and up_pos != Vector(14, 9)
+                    and up_pos != Vector(11, 21)
+                    and up_pos != Vector(14, 21)
+                ):
+                    self.next_dir = dir[2]
+                    return
+                node = self.graph.get_node_at(left_pos)
+                if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
+                    self.next_dir = dir[2]
+                    return
+                node = self.graph.get_node_at(down_pos)
+                if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
+                    self.next_dir = dir[2]
+                    return
+                node = self.graph.get_node_at(right_pos)
+                if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
+                    self.next_dir = dir[2]
+                    return
+
     def scared_move(self):
         if not self.isMoving:
-            if self.eaten:  # To be implemented
-                pos = self.pos
-                target_pos = Vector(13, 13)
-                if pos == target_pos:
-                    self.eaten = False
+            if self.just_scared:
+                self.switch = False
+                if self.chase:
+                    self.chase = False
                 else:
-                    dists = []
-
-                    if self.dir == Direction.UP:
-                        back_dir = Direction.DOWN
-                    elif self.dir == Direction.LEFT:
-                        back_dir = Direction.RIGHT
-                    elif self.dir == Direction.DOWN:
-                        back_dir = Direction.UP
-                    elif self.dir == Direction.RIGHT:
-                        back_dir = Direction.LEFT
-                    else:
-                        back_dir = Direction.NONE
-
-                    # UP
-                    up_pos = Vector(pos.x, pos.y - 1)
-                    dist = (target_pos.x - up_pos.x) ** 2 + (target_pos.y - up_pos.y) ** 2
-                    dists.append((dist, up_pos, Direction.UP))
-                    # LEFT
-                    left_pos = Vector(pos.x - 1, pos.y)
-                    dist = (target_pos.x - left_pos.x) ** 2 + (target_pos.y - left_pos.y) ** 2
-                    dists.append((dist, left_pos, Direction.LEFT))
-                    # DOWN
-                    down_pos = Vector(pos.x, pos.y + 1)
-                    dist = (target_pos.x - down_pos.x) ** 2 + (target_pos.y - down_pos.y) ** 2
-                    dists.append((dist, down_pos, Direction.DOWN))
-                    # RIGHT
-                    right_pos = Vector(pos.x + 1, pos.y)
-                    dist = (target_pos.x - right_pos.x) ** 2 + (target_pos.y - right_pos.y) ** 2
-                    dists.append((dist, right_pos, Direction.RIGHT))
-
-                    dists = sorted(dists, key=lambda x: x[0])
-                    for i in range(1, len(dists)):
-                        if i > 0 and dists[i][0] == dists[i - 1][0]:
-                            if dists[i][2] is Direction.UP:
-                                dists[i], dists[i - 1] = dists[i - 1], dists[i]
-                            elif dists[i][2] is Direction.LEFT and dists[i - 1][2] is not Direction.UP:
-                                dists[i], dists[i - 1] = dists[i - 1], dists[i]
-                            elif (
-                                dists[i][2] is Direction.DOWN
-                                and dists[i - 1][2] is not Direction.UP
-                                and dists[i - 1][2] is not Direction.LEFT
-                            ):
-                                dists[i], dists[i - 1] = dists[i - 1], dists[i]
-                            i -= 1
-
-                    for dir in dists:
-                        node = self.graph.get_node_at(up_pos)
-                        if (
-                            node is not None
-                            and dir[1] == node.pos
-                            and dir[2] is not back_dir
-                            and up_pos != Vector(11, 9)
-                            and up_pos != Vector(14, 9)
-                            and up_pos != Vector(11, 21)
-                            and up_pos != Vector(14, 21)
-                        ):
-                            self.next_dir = dir[2]
-                            return
-                        node = self.graph.get_node_at(left_pos)
-                        if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-                            self.next_dir = dir[2]
-                            return
-                        node = self.graph.get_node_at(down_pos)
-                        if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-                            self.next_dir = dir[2]
-                            return
-                        node = self.graph.get_node_at(right_pos)
-                        if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-                            self.next_dir = dir[2]
-                            return
+                    self.chase = True
 
             else:
-                if self.just_scared:
-                    self.switch = False
-                    if self.chase:
-                        self.chase = False
-                    else:
-                        self.chase = True
+                pos = self.pos
 
+                if self.dir == Direction.UP:
+                    back_dir = Direction.DOWN
+                elif self.dir == Direction.LEFT:
+                    back_dir = Direction.RIGHT
+                elif self.dir == Direction.DOWN:
+                    back_dir = Direction.UP
+                elif self.dir == Direction.RIGHT:
+                    back_dir = Direction.LEFT
                 else:
-                    pos = self.pos
+                    back_dir = Direction.NONE
 
-                    if self.dir == Direction.UP:
-                        back_dir = Direction.DOWN
-                    elif self.dir == Direction.LEFT:
-                        back_dir = Direction.RIGHT
-                    elif self.dir == Direction.DOWN:
-                        back_dir = Direction.UP
-                    elif self.dir == Direction.RIGHT:
-                        back_dir = Direction.LEFT
-                    else:
-                        back_dir = Direction.NONE
+                dirs = []
 
-                    dirs = []
+                # UP
+                node = self.graph.get_node_at(Vector(pos.x, pos.y - 1))
+                if node is not None and back_dir is not Direction.UP:
+                    dirs.append(Direction.UP)
+                # LEFT
+                node = self.graph.get_node_at(Vector(pos.x - 1, pos.y))
+                if node is not None and back_dir is not Direction.LEFT:
+                    dirs.append(Direction.LEFT)
+                # DOWN
+                node = self.graph.get_node_at(Vector(pos.x, pos.y + 1))
+                if node is not None and back_dir is not Direction.DOWN:
+                    dirs.append(Direction.DOWN)
+                # RIGHT
+                node = self.graph.get_node_at(Vector(pos.x + 1, pos.y))
+                if node is not None and back_dir is not Direction.RIGHT:
+                    dirs.append(Direction.RIGHT)
 
-                    # UP
-                    node = self.graph.get_node_at(Vector(pos.x, pos.y - 1))
-                    if node is not None and back_dir is not Direction.UP:
-                        dirs.append(Direction.UP)
-                    # LEFT
-                    node = self.graph.get_node_at(Vector(pos.x - 1, pos.y))
-                    if node is not None and back_dir is not Direction.LEFT:
-                        dirs.append(Direction.LEFT)
-                    # DOWN
-                    node = self.graph.get_node_at(Vector(pos.x, pos.y + 1))
-                    if node is not None and back_dir is not Direction.DOWN:
-                        dirs.append(Direction.DOWN)
-                    # RIGHT
-                    node = self.graph.get_node_at(Vector(pos.x + 1, pos.y))
-                    if node is not None and back_dir is not Direction.RIGHT:
-                        dirs.append(Direction.RIGHT)
+                if len(dirs) == 0:
+                    self.next_dir = Direction.NONE
+                elif len(dirs) == 1:
+                    self.next_dir = dirs[0]
+                else:
+                    self.next_dir = dirs[randint(0, len(dirs) - 1)]
 
-                    if len(dirs) == 0:
-                        self.next_dir = Direction.NONE
-                    elif len(dirs) == 1:
-                        self.next_dir = dirs[0]
-                    else:
-                        self.next_dir = dirs[randint(0, len(dirs) - 1)]
+    def move_to(self):
+        raise NotImplementedError
 
     def update(self):
-        if self.flashing is True:
-            self.timer_dict.switch_timer("flashing")
-        elif self.scared is True:
-            self.timer_dict.switch_timer("scared")
-        elif self.eaten is True:
+        if self.scared:
+            cur_time = time()
+
+            if cur_time - self.scared_timer > self.scared_time:
+                self.unscare()
+            elif cur_time - self.scared_timer > self.flash_time and self.flashing_mode is True:
+                self.flashing_mode = False
+                self.flash()
+
+        if self.eaten:
+            # print("eaten move")
+            self.eaten_move()
+        elif self.scared:
+            # print("scared move")
+            self.scared_move()
+        else:
+            # print("regular move")
+            self.move_to()
+
+        if self.eaten is True:
             if self.next_dir is Direction.UP:
                 self.timer_dict.switch_timer("eye_up")
             elif self.next_dir is Direction.DOWN:
@@ -277,6 +275,10 @@ class Ghost(Character):
                 self.timer_dict.switch_timer("eye_right")
             else:
                 self.timer_dict.switch_timer("eye_forward")
+        elif self.flashing is True:
+            self.timer_dict.switch_timer("flashing")
+        elif self.scared is True:
+            self.timer_dict.switch_timer("scared")
         else:
             if self.next_dir is Direction.UP:
                 self.timer_dict.switch_timer("up")
@@ -290,6 +292,40 @@ class Ghost(Character):
                 self.timer_dict.switch_timer("forward")
         self.move()
         self.draw()
+
+    def switch_mode(self):
+        self.switch = True
+
+        if self.dir is Direction.UP:
+            self.next_dir = Direction.DOWN
+        elif self.dir is Direction.LEFT:
+            self.next_dir = Direction.RIGHT
+        elif self.dir is Direction.DOWN:
+            self.next_dir = Direction.UP
+        elif self.dir is Direction.RIGHT:
+            self.next_dir = Direction.LEFT
+        else:
+            self.next_dir = Direction.NONE
+
+    def flash(self):
+        if not self.eaten:
+            self.flashing = True
+
+    def scare(self):
+        if not self.eaten:
+            self.scared_timer = time()
+            self.flashing_mode = True
+            self.scared = True
+
+    def unscare(self):
+        self.scared = False
+        self.flashing = False
+
+    def eat(self):
+        print("Ghost eaten")
+        self.scared = False
+        self.flashing = False
+        self.eaten = True
 
     def draw(self):
         pos = gf.world_to_screen(self.pos)
