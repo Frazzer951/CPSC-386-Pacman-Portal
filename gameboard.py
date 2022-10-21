@@ -174,11 +174,14 @@ class Gameboard:
         return count
 
     def update(self):
+        count = self.count_orbs()
         if not self.fruit_spawned:
-            count = self.count_orbs()
             if count / self.initial_point_orbs < 0.5:
                 self.fruit_spawned = True
                 self.graph.set_node_at(Vector(12, 16), NodeType.FRUIT)
+        if count == 0:
+            self.game.reset()
+            self.game.round_number += 1
         self.draw()
 
     def draw(self):
