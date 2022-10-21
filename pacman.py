@@ -14,6 +14,7 @@ class Pacman(Character):
         self.pos = game.settings.pacman_start
         self.start_pos = self.pos
         self.target_pos = game.settings.pacman_start
+
         self.images = SpriteSheet("images/pacman.png", "pacman_spritesheet.json")
 
         images_dict = {
