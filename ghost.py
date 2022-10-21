@@ -18,8 +18,10 @@ class Ghosts:
         self.timer_index = 0
 
         self.scared_time = 10.0
+        self.flash_time = 8.0
         self.scared_timer = 0.0
         self.scared_mode = False
+        self.flashing_mode = False
 
         self.ghost_images = SpriteSheet("images/ghosts.png", "ghosts_spritesheet.json")
         blinky_images = [self.ghost_images.get_sprite(f"Blinky_{n}.png") for n in range(1, 11)]
@@ -57,10 +59,15 @@ class Ghosts:
     def unscare(self):
         for ghost in self.ghosts:
             ghost.scared = False
+            ghost.flashing = False
 
     def scare(self):
         for ghost in self.ghosts:
             ghost.scared = True
+
+    def flash(self):
+        for ghost in self.ghosts:
+            ghost.flashing = True
 
     def update(self):
         if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
@@ -71,9 +78,13 @@ class Ghosts:
         if self.scared_mode is True:
             self.scared_timer = time()
             self.scared_mode = False
+            self.flashing_mode = True
             self.scare()
         elif time() - self.scared_timer > self.scared_time:
             self.unscare()
+        elif time() - self.scared_timer > self.flash_time and self.flashing_mode is True:
+            self.flashing_mode = False
+            self.flash()
 
         for ghost in self.ghosts:
             ghost.update()
@@ -106,6 +117,7 @@ class Ghost(Character):
         self.switch = False
         self.scared = False
         self.just_scared = False
+        self.flashing = False
         self.eaten = False
         self.color = (0, 0, 0)
         self.screen = game.screen
@@ -244,7 +256,9 @@ class Ghost(Character):
                         self.next_dir = dirs[randint(0, len(dirs) - 1)]
 
     def update(self):
-        if self.scared is True:
+        if self.flashing is True:
+            self.timer_dict.switch_timer("flashing")
+        elif self.scared is True:
             self.timer_dict.switch_timer("scared")
         elif self.eaten is True:
             if self.next_dir is Direction.UP:
@@ -298,7 +312,7 @@ class Blinky(Ghost):
             "left": [images[6], images[7]],
             "right": [images[8], images[9]],
             "scared": [scared_images[0], scared_images[1]],
-            "flashing": [scared_images[0], scared_images[1], scared_images[2], scared_images[3]],
+            "flashing": [scared_images[2], scared_images[3], scared_images[0], scared_images[1]],
             "eye_forward": [eye_images[0]],
             "eye_up": [eye_images[1]],
             "eye_down": [eye_images[2]],
@@ -306,7 +320,7 @@ class Blinky(Ghost):
             "eye_right": [eye_images[4]],
         }
 
-        self.timer_dict = TimerDict(images_dict, "forward")
+        self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
 
     def move_to(self):
         if not self.isMoving:
@@ -421,7 +435,7 @@ class Inky(Ghost):
             "left": [images[6], images[7]],
             "right": [images[8], images[9]],
             "scared": [scared_images[0], scared_images[1]],
-            "flashing": [scared_images[0], scared_images[1], scared_images[2], scared_images[3]],
+            "flashing": [scared_images[2], scared_images[3], scared_images[0], scared_images[1]],
             "eye_forward": [eye_images[0]],
             "eye_up": [eye_images[1]],
             "eye_down": [eye_images[2]],
@@ -429,7 +443,7 @@ class Inky(Ghost):
             "eye_right": [eye_images[4]],
         }
 
-        self.timer_dict = TimerDict(images_dict, "forward")
+        self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
 
     def move_to(self):
         if not self.isMoving:
@@ -554,7 +568,7 @@ class Pinky(Ghost):
             "left": [images[6], images[7]],
             "right": [images[8], images[9]],
             "scared": [scared_images[0], scared_images[1]],
-            "flashing": [scared_images[0], scared_images[1], scared_images[2], scared_images[3]],
+            "flashing": [scared_images[2], scared_images[3], scared_images[0], scared_images[1]],
             "eye_forward": [eye_images[0]],
             "eye_up": [eye_images[1]],
             "eye_down": [eye_images[2]],
@@ -562,7 +576,7 @@ class Pinky(Ghost):
             "eye_right": [eye_images[4]],
         }
 
-        self.timer_dict = TimerDict(images_dict, "forward")
+        self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
 
     def move_to(self):
         if not self.isMoving:
@@ -685,7 +699,7 @@ class Clyde(Ghost):
             "left": [images[6], images[7]],
             "right": [images[8], images[9]],
             "scared": [scared_images[0], scared_images[1]],
-            "flashing": [scared_images[0], scared_images[1], scared_images[2], scared_images[3]],
+            "flashing": [scared_images[2], scared_images[3], scared_images[0], scared_images[1]],
             "eye_forward": [eye_images[0]],
             "eye_up": [eye_images[1]],
             "eye_down": [eye_images[2]],
@@ -693,7 +707,7 @@ class Clyde(Ghost):
             "eye_right": [eye_images[4]],
         }
 
-        self.timer_dict = TimerDict(images_dict, "forward")
+        self.timer_dict = TimerDict(dict_frames=images_dict, first_key="forward", wait=200)
 
     def move_to(self):
         if not self.isMoving:

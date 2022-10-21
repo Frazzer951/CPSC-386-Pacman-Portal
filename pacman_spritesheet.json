@@ -1,0 +1,212 @@
+{"frames": {
+    "Pacman_Circle.png":
+	{
+		"frame": {"x":0,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Up1.png":
+	{
+		"frame": {"x":32,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Up2.png":
+	{
+		"frame": {"x":64,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Left1.png":
+	{
+		"frame": {"x":96,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Left2.png":
+	{
+		"frame": {"x":128,"y":0,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Down1.png":
+	{
+		"frame": {"x":0,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Down2.png":
+	{
+		"frame": {"x":32,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Right1.png":
+	{
+		"frame": {"x":64,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Right2.png":
+	{
+		"frame": {"x":96,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying1.png":
+	{
+		"frame": {"x":128,"y":32,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying2.png":
+	{
+		"frame": {"x":0,"y":64,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying3.png":
+	{
+		"frame": {"x":32,"y":64,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying4.png":
+	{
+		"frame": {"x":64,"y":64,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying5.png":
+	{
+		"frame": {"x":96,"y":64,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying6.png":
+	{
+		"frame": {"x":128,"y":64,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying7.png":
+	{
+		"frame": {"x":0,"y":96,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying8.png":
+	{
+		"frame": {"x":32,"y":96,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying9.png":
+	{
+		"frame": {"x":64,"y":96,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying10.png":
+	{
+		"frame": {"x":96,"y":96,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying11.png":
+	{
+		"frame": {"x":128,"y":96,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying12.png":
+	{
+		"frame": {"x":0,"y":128,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying13.png":
+	{
+		"frame": {"x":32,"y":128,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying14.png":
+	{
+		"frame": {"x":64,"y":128,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying15.png":
+	{
+		"frame": {"x":96,"y":128,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	},
+    "Pacman_Dying16.png":
+	{
+		"frame": {"x":128,"y":128,"w":32,"h":32},
+		"rotated": false,
+		"trimmed": false,
+		"spriteSourceSize": {"x":0,"y":0,"w":224,"h":224},
+		"sourceSize": {"w":224,"h":224}
+	}
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "pacman_spritesheet.png",
+	"format": "RGBA8888",
+	"size": {"w":224,"h":224},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:f4646ccd420cec8c901759d3c5b7fc72:66ee9ab05c9e17667b00533febb92420:647e032122581cff100b5f3e740d1de5$"
+}
+}
