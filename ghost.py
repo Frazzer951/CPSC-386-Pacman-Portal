@@ -70,6 +70,19 @@ class Ghosts:
         for ghost in self.ghosts:
             ghost.flashing = True
 
+    def check_collision(self):
+        pac_pos = gf.world_to_screen(self.game.pacman.pos)
+        pac_rect = self.game.pacman.rect
+        pac_rect.center = pac_pos[0], pac_pos[1]
+
+        for ghost in self.ghosts:
+            if ghost.rect.colliderect(pac_rect):
+                if ghost.scared:
+                    print("Ghost eaten")
+                    ghost.eaten = True
+                else:
+                    self.game.pacman.die()
+
     def update(self):
         if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
             self.switch_mode()
@@ -87,19 +100,14 @@ class Ghosts:
             self.flashing_mode = False
             self.flash()
 
+        self.check_collision()
+
         for ghost in self.ghosts:
-            ghost.update()
             if ghost.scared:
                 ghost.scared_move()
-                if pg.sprite.collide_rect(ghost, self.game.pacman):
-                    print("Ghost eaten")
-                    ghost.eaten = True
             else:
                 ghost.move_to()
-                ghost.eaten = False
-                if pg.sprite.collide_rect(ghost, self.game.pacman):
-                    self.game.pacman.lives -= 1
-                    print("Pacman got no scoped")
+            ghost.update()
 
 
 class Ghost(Character):
@@ -122,14 +130,11 @@ class Ghost(Character):
         self.color = (0, 0, 0)
         self.screen = game.screen
         self.timer_dict = {}
-        self.rect = None
-        self.image = None
-        self.pos = None
 
         self.temp = 0
 
     def scared_move(self):
-        if self.isMoving:
+        if not self.isMoving:
             if self.eaten:  # To be implemented
                 pos = self.pos
                 target_pos = Vector(13, 13)

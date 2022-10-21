@@ -47,13 +47,12 @@ class Pacman(Character):
         }
 
         self.timer_dict = TimerDict(dict_frames=images_dict, first_key="start", wait=100)
-        # self.image = pg.image.load('images/pacman.bmp')
-        # self.rect = self.image.get_rect()
 
         self.next_dir = Direction.NONE
 
     def die(self):
-        pass
+        print("Pacman killed!")
+        # TODO
 
     def update(self):
         if not self.isMoving:
@@ -78,6 +77,3 @@ class Pacman(Character):
         rect = image.get_rect()
         rect.center = pos[0], pos[1]
         self.screen.blit(image, rect)
-        # pg.draw.circle(self.screen, (255, 255, 0), pos, 10)
-        # image = self.timer.image()
-        # self.screen.blit(image, self.rect)
