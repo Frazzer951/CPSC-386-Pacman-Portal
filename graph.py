@@ -39,7 +39,8 @@ class Node:
         self.neighbors.remove(node)
         node.neighbors.remove(self)
 
-    def draw(self, screen):
+    def draw(self, game):
+        screen = game.screen
         pos = gf.world_to_screen(self.pos)
         if self.type == NodeType.NONE:
             pass  # pg.draw.circle(screen, (255, 255, 255), pos, 1)
@@ -48,6 +49,10 @@ class Node:
         if self.type == NodeType.POWER_UP:
             pg.draw.circle(screen, (255, 255, 255), pos, 5)
         if self.type == NodeType.FRUIT:
+            image = game.fruits[min(game.round_number, 7)]
+            rect = image.get_rect()
+            rect.center = pos[0], pos[1]
+            screen.blit(image, rect)
             pg.draw.circle(screen, (255, 0, 0), pos, 10)
         if self.type == NodeType.PORTAL_1:
             pg.draw.circle(screen, (0, 0, 255), pos, 10)
