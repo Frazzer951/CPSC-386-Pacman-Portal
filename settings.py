@@ -26,3 +26,6 @@ class Settings:
         self.point_orb_score = 10
         self.power_up_score = 50
         self.fruit_score = 100
+
+        # Speeds
+        self.base_speed = 0.2

@@ -115,6 +115,16 @@ class Ghost(Character):
         self.flash_time = 8.0
         self.scared_timer = 0.0
         self.flashing_mode = False
+        self.init_speed()
+
+    def init_speed(self):
+        round = self.game.round_number
+        if round == 0:
+            self.move_speed = self.game.settings.base_speed * 0.5
+        elif round < 4:
+            self.move_speed = self.game.settings.base_speed * 0.55
+        else:
+            self.move_speed = self.game.settings.base_speed * 0.60
 
     def eaten_move(self):
         if not self.isMoving:
@@ -367,12 +377,15 @@ class Blinky(Ghost):
     def reset(self):
         super().reset()
         self.pos = self.game.settings.blinky_start
+        self.start_pos = self.pos
+        self.target_pos = self.pos
         self.chase = False
         self.switch = False
         self.scared = False
         self.just_scared = False
         self.flashing = False
         self.eaten = False
+        self.init_speed()
 
     def move_to(self):
         if not self.isMoving:
@@ -499,12 +512,15 @@ class Inky(Ghost):
     def reset(self):
         super().reset()
         self.pos = self.game.settings.inky_start
+        self.start_pos = self.pos
+        self.target_pos = self.pos
         self.chase = False
         self.switch = False
         self.scared = False
         self.just_scared = False
         self.flashing = False
         self.eaten = False
+        self.init_speed()
 
     def move_to(self):
         if not self.isMoving:
@@ -641,12 +657,15 @@ class Pinky(Ghost):
     def reset(self):
         super().reset()
         self.pos = self.game.settings.pinky_start
+        self.start_pos = self.pos
+        self.target_pos = self.pos
         self.chase = False
         self.switch = False
         self.scared = False
         self.just_scared = False
         self.flashing = False
         self.eaten = False
+        self.init_speed()
 
     def move_to(self):
         if not self.isMoving:
@@ -781,12 +800,15 @@ class Clyde(Ghost):
     def reset(self):
         super().reset()
         self.pos = self.game.settings.clyde_start
+        self.start_pos = self.pos
+        self.target_pos = self.pos
         self.chase = False
         self.switch = False
         self.scared = False
         self.just_scared = False
         self.flashing = False
         self.eaten = False
+        self.init_speed()
 
     def move_to(self):
         if not self.isMoving:

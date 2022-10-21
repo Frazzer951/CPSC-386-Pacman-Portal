@@ -33,7 +33,7 @@ class Character(Sprite):
         self.gameboard: Gameboard = game.gameboard
         # self.sound = game.sound
 
-        self.move_speed = 0.1
+        self.move_speed = game.settings.base_speed
 
         self.dir = Direction.NONE
         self.next_dir = Direction.NONE

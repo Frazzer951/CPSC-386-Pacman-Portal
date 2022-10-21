@@ -51,13 +51,28 @@ class Pacman(Character):
         self.next_dir = Direction.NONE
 
         self.dying = False
+        self.init_speed()
+
+    def init_speed(self):
+        round = self.game.round_number
+        if round == 0:
+            print("80% move speed")
+            self.move_speed = self.game.settings.base_speed * 0.8
+        elif round < 4:
+            print("80% move speed")
+            self.move_speed = self.game.settings.base_speed * 0.9
+        else:
+            print("80% move speed")
+            self.move_speed = self.game.settings.base_speed * 1.0
+        print(f"Move speed: {self.move_speed}")
 
     def reset(self):
         super().reset()
         self.dying = False
         self.pos = self.game.settings.pacman_start
         self.start_pos = self.pos
-        self.target_pos = self.game.settings.pacman_start
+        self.target_pos = self.pos
+        self.init_speed()
 
     def die(self):
         print("Pacman killed!")
