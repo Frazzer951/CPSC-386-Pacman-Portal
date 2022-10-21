@@ -68,11 +68,12 @@ class Ghosts:
         pac_rect.center = pac_pos[0], pac_pos[1]
 
         for ghost in self.ghosts:
-            if ghost.rect.colliderect(pac_rect):
-                if ghost.scared:
-                    ghost.eat()
-                else:
-                    self.game.pacman.die()
+            if not ghost.eaten:
+                if ghost.rect.colliderect(pac_rect):
+                    if ghost.scared:
+                        ghost.eat()
+                    else:
+                        self.game.pacman.die()
 
     def update(self):
         if self.timer_index < len(self.times) and time() - self.timer > self.times[self.timer_index]:
@@ -116,81 +117,82 @@ class Ghost(Character):
         self.flashing_mode = False
 
     def eaten_move(self):
-        pos = self.pos
-        target_pos = Vector(13, 13)
-        if pos == target_pos:
-            self.eaten = False
-        else:
-            dists = []
-
-            if self.dir == Direction.UP:
-                back_dir = Direction.DOWN
-            elif self.dir == Direction.LEFT:
-                back_dir = Direction.RIGHT
-            elif self.dir == Direction.DOWN:
-                back_dir = Direction.UP
-            elif self.dir == Direction.RIGHT:
-                back_dir = Direction.LEFT
+        if not self.isMoving:
+            pos = self.pos
+            target_pos = Vector(13, 13)
+            if pos == target_pos:
+                self.eaten = False
             else:
-                back_dir = Direction.NONE
+                dists = []
 
-            # UP
-            up_pos = Vector(pos.x, pos.y - 1)
-            dist = (target_pos.x - up_pos.x) ** 2 + (target_pos.y - up_pos.y) ** 2
-            dists.append((dist, up_pos, Direction.UP))
-            # LEFT
-            left_pos = Vector(pos.x - 1, pos.y)
-            dist = (target_pos.x - left_pos.x) ** 2 + (target_pos.y - left_pos.y) ** 2
-            dists.append((dist, left_pos, Direction.LEFT))
-            # DOWN
-            down_pos = Vector(pos.x, pos.y + 1)
-            dist = (target_pos.x - down_pos.x) ** 2 + (target_pos.y - down_pos.y) ** 2
-            dists.append((dist, down_pos, Direction.DOWN))
-            # RIGHT
-            right_pos = Vector(pos.x + 1, pos.y)
-            dist = (target_pos.x - right_pos.x) ** 2 + (target_pos.y - right_pos.y) ** 2
-            dists.append((dist, right_pos, Direction.RIGHT))
+                if self.dir == Direction.UP:
+                    back_dir = Direction.DOWN
+                elif self.dir == Direction.LEFT:
+                    back_dir = Direction.RIGHT
+                elif self.dir == Direction.DOWN:
+                    back_dir = Direction.UP
+                elif self.dir == Direction.RIGHT:
+                    back_dir = Direction.LEFT
+                else:
+                    back_dir = Direction.NONE
 
-            dists = sorted(dists, key=lambda x: x[0])
-            for i in range(1, len(dists)):
-                if i > 0 and dists[i][0] == dists[i - 1][0]:
-                    if dists[i][2] is Direction.UP:
-                        dists[i], dists[i - 1] = dists[i - 1], dists[i]
-                    elif dists[i][2] is Direction.LEFT and dists[i - 1][2] is not Direction.UP:
-                        dists[i], dists[i - 1] = dists[i - 1], dists[i]
-                    elif (
-                        dists[i][2] is Direction.DOWN
-                        and dists[i - 1][2] is not Direction.UP
-                        and dists[i - 1][2] is not Direction.LEFT
+                # UP
+                up_pos = Vector(pos.x, pos.y - 1)
+                dist = (target_pos.x - up_pos.x) ** 2 + (target_pos.y - up_pos.y) ** 2
+                dists.append((dist, up_pos, Direction.UP))
+                # LEFT
+                left_pos = Vector(pos.x - 1, pos.y)
+                dist = (target_pos.x - left_pos.x) ** 2 + (target_pos.y - left_pos.y) ** 2
+                dists.append((dist, left_pos, Direction.LEFT))
+                # DOWN
+                down_pos = Vector(pos.x, pos.y + 1)
+                dist = (target_pos.x - down_pos.x) ** 2 + (target_pos.y - down_pos.y) ** 2
+                dists.append((dist, down_pos, Direction.DOWN))
+                # RIGHT
+                right_pos = Vector(pos.x + 1, pos.y)
+                dist = (target_pos.x - right_pos.x) ** 2 + (target_pos.y - right_pos.y) ** 2
+                dists.append((dist, right_pos, Direction.RIGHT))
+
+                dists = sorted(dists, key=lambda x: x[0])
+                for i in range(1, len(dists)):
+                    if i > 0 and dists[i][0] == dists[i - 1][0]:
+                        if dists[i][2] is Direction.UP:
+                            dists[i], dists[i - 1] = dists[i - 1], dists[i]
+                        elif dists[i][2] is Direction.LEFT and dists[i - 1][2] is not Direction.UP:
+                            dists[i], dists[i - 1] = dists[i - 1], dists[i]
+                        elif (
+                            dists[i][2] is Direction.DOWN
+                            and dists[i - 1][2] is not Direction.UP
+                            and dists[i - 1][2] is not Direction.LEFT
+                        ):
+                            dists[i], dists[i - 1] = dists[i - 1], dists[i]
+                        i -= 1
+
+                for dir in dists:
+                    node = self.graph.get_node_at(up_pos)
+                    if (
+                        node is not None
+                        and dir[1] == node.pos
+                        and dir[2] is not back_dir
+                        and up_pos != Vector(11, 9)
+                        and up_pos != Vector(14, 9)
+                        and up_pos != Vector(11, 21)
+                        and up_pos != Vector(14, 21)
                     ):
-                        dists[i], dists[i - 1] = dists[i - 1], dists[i]
-                    i -= 1
-
-            for dir in dists:
-                node = self.graph.get_node_at(up_pos)
-                if (
-                    node is not None
-                    and dir[1] == node.pos
-                    and dir[2] is not back_dir
-                    and up_pos != Vector(11, 9)
-                    and up_pos != Vector(14, 9)
-                    and up_pos != Vector(11, 21)
-                    and up_pos != Vector(14, 21)
-                ):
-                    self.next_dir = dir[2]
-                    return
-                node = self.graph.get_node_at(left_pos)
-                if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-                    self.next_dir = dir[2]
-                    return
-                node = self.graph.get_node_at(down_pos)
-                if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-                    self.next_dir = dir[2]
-                    return
-                node = self.graph.get_node_at(right_pos)
-                if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
-                    self.next_dir = dir[2]
-                    return
+                        self.next_dir = dir[2]
+                        return
+                    node = self.graph.get_node_at(left_pos)
+                    if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
+                        self.next_dir = dir[2]
+                        return
+                    node = self.graph.get_node_at(down_pos)
+                    if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
+                        self.next_dir = dir[2]
+                        return
+                    node = self.graph.get_node_at(right_pos)
+                    if node is not None and dir[1] == node.pos and dir[2] is not back_dir:
+                        self.next_dir = dir[2]
+                        return
 
     def scared_move(self):
         if not self.isMoving:
