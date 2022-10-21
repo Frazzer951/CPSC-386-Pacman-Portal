@@ -1,8 +1,6 @@
 from random import randint
 from time import time
 
-import pygame as pg
-
 import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet

@@ -1,7 +1,5 @@
 import pygame as pg
 
-# import pygame.font
-
 
 class Scoreboard:
     def __init__(self, game):

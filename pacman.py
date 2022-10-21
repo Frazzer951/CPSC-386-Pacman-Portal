@@ -1,9 +1,7 @@
-import pygame as pg
-
 import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet
-from timer import TimerDict, Timer
+from timer import Timer, TimerDict
 
 
 class Pacman(Character):

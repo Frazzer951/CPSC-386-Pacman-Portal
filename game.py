@@ -9,7 +9,6 @@ from launch import Launchscreen
 from pacman import Pacman
 from scoreboard import Scoreboard
 from settings import Settings
-from sound import Sound
 from spritesheet import SpriteSheet
 
 
