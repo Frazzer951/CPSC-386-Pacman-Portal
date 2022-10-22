@@ -1,10 +1,13 @@
+from random import random
 import sys
-
+from tkinter.tix import INTEGER
+import game_functions as gf
 import pygame as pg
 from pygame import mixer
 from pygame.sprite import Sprite
-
+from random import randint
 from button import Button
+
 from spritesheet import SpriteSheet
 from timer import Timer
 
@@ -340,10 +343,13 @@ class Launchscreen:
         pg.font.init()
 
         self.play_button = Button(self.screen, "Start Game")
-        self.play_button.rect.top += 230
+        self.highscore_button = Button(self. screen, "HighScores")   #
+        self.play_button.rect.top += 230 
+        self.highscore_button.rect.top += 300  #
         self.play_button.prep_msg("Play Game")
+        self.highscore_button.prep_msg("HighScores")
 
-    def check_events(self):
+    def check_events(self):    ## need to make highscore button key press here
         for e in pg.event.get():
             if e.type == pg.QUIT:
                 sys.exit()
@@ -355,7 +361,50 @@ class Launchscreen:
                 if self.play_button.rect.collidepoint(mouse_x, mouse_y):
                     self.landing_page_finished = True
                     self.title_music.stop()
+                elif self.highscore_button.rect.collidepoint(mouse_x, mouse_y):
+                    self.highScores()
 
+    def highScores(self):
+       
+        
+        pg.display.set_caption("HighScores")
+        self.font = pg.font.Font("fonts/crackman.ttf", 50)
+        self.font2 = pg.font.Font("fonts/crackman.ttf", 18)
+        self.font3 = pg.font.Font("fonts/crackman.ttf", 35)
+        self.key_pressed = False
+        #self.gethigh = gf.read_high_scores()
+        
+        while not self.key_pressed:
+            self.PLAY_MOUSE_POS = pg.mouse.get_pos()
+            self.Surface.fill(BLACK)
+
+            self.highscores_text = self.font.render("Highscores", True, (249, 241, 0))
+            self.backspace = self.font2.render("Press BACKSPACE or DELETE to go back to menu", True, (249, 241, 0))
+            self.Surface.blit(self.backspace, (80,700))
+            self.Surface.blit(self.highscores_text, (160, 100))
+            
+            scores = gf.read_high_scores()
+            score_left = 245
+            for i, score in enumerate(scores):
+                score_text = self.font3.render(f"{i+1}: {score}", True, ("#00FFFF"))
+                score_rect = score_text.get_rect()
+                score_rect.left = score_left
+                score_rect.top = 180 + i * 1.2 * score_rect.height
+                self.Surface.blit(score_text, score_rect)
+        
+           
+            for e in pg.event.get():
+                if e.type == pg.QUIT or e.type == pg.KEYDOWN and e.key == pg.K_ESCAPE:
+                    sys.exit()
+                elif e.type == pg.KEYDOWN and e.key == pg.K_BACKSPACE:
+                    self.key_pressed = True
+
+            pg.display.update()
+
+        #self.h = 0
+        #self.show(self)
+        
+           
     def show(self):
         while not self.landing_page_finished:
             self.draw()
@@ -394,6 +443,7 @@ class Launchscreen:
         self.current_time = pg.time.get_ticks()
 
         self.play_button.draw_button()
+        self.highscore_button.draw_button()
 
         pg.display.update()
         pg.display.flip()
