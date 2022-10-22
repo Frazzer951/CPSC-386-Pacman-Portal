@@ -2,6 +2,7 @@ import pygame as pg
 
 from graph import Graph, NodeType
 from vector import Vector
+from pygame import mixer
 
 
 class Gameboard:
@@ -147,16 +148,24 @@ class Gameboard:
 
     def pacman_collision_check(self, pos):
         node = self.graph.get_node_at(pos)
+        self.mixer = mixer.init()
+        self.bitesound = pg.mixer.Sound("sounds/pacman_bite.wav")
+        self.fruitsound = pg.mixer.Sound("sounds/pacman_eatfruit.wav")
+        self.bitesound.set_volume(0.2)
+        self.fruitsound.set_volume(0.2)
         if node.type == NodeType.POINT:
             self.game.scoreboard.increment_score(self.settings.point_orb_score)
             node.type = NodeType.NONE
+            self.bitesound.play()
         if node.type == NodeType.POWER_UP:
             self.game.scoreboard.increment_score(self.settings.power_up_score)
             self.game.ghosts.scared_mode = True
             node.type = NodeType.NONE
+            self.fruitsound.play()
         if node.type == NodeType.FRUIT:
             self.game.scoreboard.increment_score(self.settings.fruit_score)
             node.type = NodeType.NONE
+            self.fruitsound.play()
 
         if self.portal_1_placed and self.portal_2_placed:
             if node.type == NodeType.PORTAL_1:
