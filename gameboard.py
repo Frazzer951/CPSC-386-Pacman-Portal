@@ -1,8 +1,8 @@
 import pygame as pg
+from pygame import mixer
 
 from graph import Graph, NodeType
 from vector import Vector
-from pygame import mixer
 
 
 class Gameboard:
@@ -11,6 +11,11 @@ class Gameboard:
         self.settings = game.settings
         self.screen = game.screen
         self.graph: Graph = Graph()
+
+        self.bitesound = pg.mixer.Sound("sounds/pacman_bite.wav")
+        self.fruitsound = pg.mixer.Sound("sounds/pacman_eatfruit.wav")
+        self.bitesound.set_volume(0.2)
+        self.fruitsound.set_volume(0.2)
 
         self.image = pg.transform.rotozoom(pg.image.load("./images/maze.png"), 0, 2.75)
         self.rect = self.image.get_rect()
@@ -149,14 +154,12 @@ class Gameboard:
     def pacman_collision_check(self, pos):
         node = self.graph.get_node_at(pos)
         self.mixer = mixer.init()
-        self.bitesound = pg.mixer.Sound("sounds/pacman_bite.wav")
-        self.fruitsound = pg.mixer.Sound("sounds/pacman_eatfruit.wav")
-        self.bitesound.set_volume(0.2)
-        self.fruitsound.set_volume(0.2)
+
         if node.type == NodeType.POINT:
             self.game.scoreboard.increment_score(self.settings.point_orb_score)
             node.type = NodeType.NONE
-            self.bitesound.play()
+            if self.bitesound.get_num_channels() == 0:
+                self.bitesound.play()
         if node.type == NodeType.POWER_UP:
             self.game.scoreboard.increment_score(self.settings.power_up_score)
             self.game.ghosts.scared_mode = True

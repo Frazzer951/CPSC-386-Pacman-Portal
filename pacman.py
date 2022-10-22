@@ -1,19 +1,10 @@
-
 import pygame
-
-from pygame import transform
-
+from pygame import mixer, transform
 
 import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet
 from timer import Timer, TimerDict
-
-from pygame import transform
-from vector import Vector
-from pygame import mixer
-
-
 
 
 class Pacman(Character):
