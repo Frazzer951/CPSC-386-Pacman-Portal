@@ -1,9 +1,11 @@
+import pygame
 import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet
 from timer import Timer, TimerDict
 from pygame import transform
 from vector import Vector
+from pygame import mixer
 
 
 class Pacman(Character):
@@ -73,8 +75,12 @@ class Pacman(Character):
         self.init_speed()
 
     def die(self):
+        self.mixer = mixer.init()
+        self.deadsound = pygame.mixer.Sound("sounds/pacman_death.wav")
+        self.deadsound.set_volume(0.2)
         print("Pacman killed!")
         self.dying = True
+        self.deadsound.play()
         self.dying_timer.reset()
         self.lives -= 1
         print(f"{self.lives} lives remaining")
