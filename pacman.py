@@ -2,6 +2,8 @@ import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet
 from timer import Timer, TimerDict
+from pygame import transform
+from vector import Vector
 
 
 class Pacman(Character):
@@ -14,6 +16,8 @@ class Pacman(Character):
         self.target_pos = game.settings.pacman_start
 
         self.images = SpriteSheet("images/pacman.png", "pacman_spritesheet.json")
+        self.lives_image = self.images.get_sprite("Pacman_Right1.png")
+        self.lives_image = transform.scale(self.lives_image, (50, 50))
 
         images_dict = {
             "start": [self.images.get_sprite("Pacman_Circle.png")],
@@ -45,7 +49,7 @@ class Pacman(Character):
         }
 
         self.timer_dict = TimerDict(dict_frames=images_dict, first_key="start", wait=100)
-        self.dying_timer = Timer(frames=images_dict["dead"], looponce=True)
+        self.dying_timer = Timer(frames=images_dict["dead"], wait=200, looponce=True)
         self.next_dir = Direction.NONE
 
         self.dying = False
@@ -93,7 +97,9 @@ class Pacman(Character):
 
         if self.dying and self.dying_timer.finished:
             if self.lives > 0:
-                self.game.reset()
+                # self.game.reset()
+                self.reset()
+                self.game.ghosts.reset() 
             else:
                 self.game.game_over()
             return
@@ -112,4 +118,15 @@ class Pacman(Character):
 
         rect = image.get_rect()
         rect.center = pos[0], pos[1]
+        self.screen.blit(image, rect)
+
+
+        rect.center = 40, 780
+        for _ in range(self.lives):
+            self.screen.blit(self.lives_image, rect)
+            rect.x += 40
+
+        image = self.game.fruits[min(self.game.round_number, 7)]
+        rect = image.get_rect()
+        rect.center = 610, 775
         self.screen.blit(image, rect)

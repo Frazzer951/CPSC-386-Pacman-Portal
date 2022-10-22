@@ -3,9 +3,12 @@ import pygame as pg
 
 class Scoreboard:
     def __init__(self, game):
+        self.game = game
+
         self.score = 0
         self.level = 0
         self.high_score = 0
+        self.scored_over_10_000 = False
 
         self.settings = game.settings
         self.screen = game.screen
@@ -37,6 +40,9 @@ class Scoreboard:
 
     def update(self):
         # TODO: other stuff
+        if not self.scored_over_10_000 and self.score > 10_000:
+            self.game.pacman.lives += 1
+            self.scored_over_10_000 = True
         self.draw()
 
     def draw(self):
