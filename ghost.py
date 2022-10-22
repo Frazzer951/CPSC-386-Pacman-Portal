@@ -122,11 +122,14 @@ class Ghost(Character):
     def init_speed(self):
         round = self.game.round_number
         if round == 0:
-            self.move_speed = self.game.settings.base_speed * 0.5
+            self.norm_speed = self.game.settings.base_speed * 0.75
+            self.scared_speed = self.game.settings.base_speed * 0.50
         elif round < 4:
-            self.move_speed = self.game.settings.base_speed * 0.55
+            self.norm_speed = self.game.settings.base_speed * 0.85
+            self.scared_speed = self.game.settings.base_speed * 0.55
         else:
-            self.move_speed = self.game.settings.base_speed * 0.60
+            self.norm_speed = self.game.settings.base_speed * 0.95
+            self.scared_speed = self.game.settings.base_speed * 0.60
 
     def eaten_move(self):
         if not self.isMoving:
@@ -270,12 +273,15 @@ class Ghost(Character):
 
         if self.eaten:
             # print("eaten move")
+            self.move_speed = self.game.settings.base_speed
             self.eaten_move()
         elif self.scared:
             # print("scared move")
+            self.move_speed = self.scared_speed
             self.scared_move()
         else:
             # print("regular move")
+            self.move_speed = self.norm_speed
             self.move_to()
 
         if self.eaten is True:
