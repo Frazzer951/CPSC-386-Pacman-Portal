@@ -1,11 +1,19 @@
+
 import pygame
+
+from pygame import transform
+
+
 import game_functions as gf
 from character import Character, Direction
 from spritesheet import SpriteSheet
 from timer import Timer, TimerDict
+
 from pygame import transform
 from vector import Vector
 from pygame import mixer
+
+
 
 
 class Pacman(Character):
@@ -105,7 +113,7 @@ class Pacman(Character):
             if self.lives > 0:
                 # self.game.reset()
                 self.reset()
-                self.game.ghosts.reset() 
+                self.game.ghosts.reset()
             else:
                 self.game.game_over()
             return
@@ -125,7 +133,6 @@ class Pacman(Character):
         rect = image.get_rect()
         rect.center = pos[0], pos[1]
         self.screen.blit(image, rect)
-
 
         rect.center = 40, 780
         for _ in range(self.lives):
