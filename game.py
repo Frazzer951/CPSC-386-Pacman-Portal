@@ -21,7 +21,7 @@ class Game:
 
         # self.sound = Sound(bg_music="sounds/launch.mp3")
         self.sound = pg.mixer.Sound("sounds/ghost_siren.mp3")
-        self.sound.set_volume(.2)
+        self.sound.set_volume(0.2)
         self.scoreboard = Scoreboard(game=self)
 
         self.round_number = 0

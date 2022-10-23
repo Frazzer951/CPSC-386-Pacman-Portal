@@ -78,7 +78,7 @@ class Pacman(Character):
         self.mixer = mixer.init()
         self.deadsound = pygame.mixer.Sound("sounds/pacman_death.wav")
         self.deadsound.set_volume(0.2)
-        print("Pacman killed!")
+        # print("Pacman killed!")
         self.dying = True
         self.deadsound.play()
         self.dying_timer.reset()

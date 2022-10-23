@@ -97,7 +97,7 @@ class Gameboard:
                     if type != NodeType.NONE:
                         self.initial_point_orbs += 1
                         self.graph.set_node_at(Vector(i, j), type)
-        print(f"Total orbs = {self.initial_point_orbs}")
+        # print(f"Total orbs = {self.initial_point_orbs}")
 
         # "Warp Gate" Nodes
         self.graph.connect_pos(Vector(0, 13), Vector(-1, 13))
