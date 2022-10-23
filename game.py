@@ -19,8 +19,7 @@ class Game:
         size = self.settings.screen_width, self.settings.screen_height  # tuple
         self.screen = pg.display.set_mode(size=size)
 
-        # self.sound = Sound(bg_music="sounds/launch.mp3")
-        self.sound = pg.mixer.Sound("sounds/ghost_siren.mp3")
+        self.sound = pg.mixer.Sound("sounds/ghost_siren.wav")
         self.sound.set_volume(0.2)
         self.scoreboard = Scoreboard(game=self)
 

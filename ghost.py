@@ -345,7 +345,7 @@ class Ghost(Character):
 
     def eat(self):
         # print("Ghost eaten")
-        sound = mixer.Sound("sounds/ghost_eaten.mp3")
+        sound = mixer.Sound("sounds/ghost_eaten.wav")
         sound.set_volume(0.3)
         sound.play()
         self.scared = False
