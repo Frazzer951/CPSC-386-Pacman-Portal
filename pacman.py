@@ -74,6 +74,7 @@ class Pacman(Character):
         self.init_speed()
 
     def die(self):
+        self.game.sound.stop()
         self.mixer = mixer.init()
         self.deadsound = pygame.mixer.Sound("sounds/pacman_death.wav")
         self.deadsound.set_volume(0.2)
@@ -105,6 +106,7 @@ class Pacman(Character):
                 # self.game.reset()
                 self.reset()
                 self.game.ghosts.reset()
+                self.game.sound.play(-1)
             else:
                 self.game.game_over()
             return
