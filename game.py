@@ -20,6 +20,8 @@ class Game:
         self.screen = pg.display.set_mode(size=size)
 
         # self.sound = Sound(bg_music="sounds/launch.mp3")
+        self.sound = pg.mixer.Sound("sounds/ghost_siren.mp3")
+        self.sound.set_volume(.2)
         self.scoreboard = Scoreboard(game=self)
 
         self.round_number = 0
@@ -60,6 +62,7 @@ class Game:
 
     def play(self):
         # self.sound.play_bg()
+        self.sound.play(-1)
         frametime = 1 / 60
         self.timer = time()
         while not self.gameover:

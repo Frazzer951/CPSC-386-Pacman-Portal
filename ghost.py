@@ -1,5 +1,6 @@
 from random import randint
 from time import time
+from pygame import mixer
 
 import game_functions as gf
 from character import Character, Direction
@@ -343,6 +344,9 @@ class Ghost(Character):
 
     def eat(self):
         print("Ghost eaten")
+        sound = mixer.Sound("sounds/ghost_eaten.mp3")
+        sound.set_volume(.3)
+        sound.play()
         self.scared = False
         self.flashing = False
         self.eaten = True
